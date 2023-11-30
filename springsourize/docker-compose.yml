@@ -1,0 +1,13 @@
+
+  version: '3'
+  services:
+    sourize:
+      image: springsourize
+      ports:
+        - "8080:8080"
+
+    reactapp:
+      build:
+        context: ../reactsourize
+      ports:
+        - "3000:3000"
