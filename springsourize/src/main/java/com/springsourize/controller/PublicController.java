@@ -4,6 +4,7 @@ import com.springsourize.dto.CreateUserRequest;
 import com.springsourize.dto.LoginUserRequest;
 import com.springsourize.model.UserEntity;
 import com.springsourize.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +33,16 @@ public class PublicController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> login(@RequestBody LoginUserRequest loginUserRequest){
+    public ResponseEntity<Object> login(@RequestBody LoginUserRequest loginUserRequest) {
+        try {
+            UserEntity user = userService.loginUser(loginUserRequest);
 
-
-        return ResponseEntity.ok(userService.loginUser(loginUserRequest));
-
+            // Başarılı giriş durumunda kullanıcı bilgilerini döndür
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            // Hatalı giriş durumunda hata mesajını döndür
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
 }
