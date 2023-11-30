@@ -67,7 +67,7 @@ const SignUp = ({ onClose }) => {
           <input className='' type="text" id="lastName" value={lastName} onChange={handleLastNameChange} />
         </div>
         <div className="form-group">
-          <label className='better-labels' htmlFor="firstName">Kullanıcı Adı: </label>
+          <label className='better-labels' htmlFor="firstName">E-mail: </label>
           <input className='' type="text" id="username" value={username} onChange={handleUsernameChange} />
         </div>
 
