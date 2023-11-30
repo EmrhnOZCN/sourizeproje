@@ -18,37 +18,46 @@ const Auth = ({ onClose, onLoginSuccess }) => {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+      e.preventDefault();
 
-    try {
-      const loginResponse = await axios.post('http://127.0.0.1:3001/users/login', {
-        username,
-        password,
-      });
+      try {
+          const loginResponse = await axios.post('http://localhost:8080/public/login', {
+              username,
+              password,
+          });
 
-      if (!loginResponse.data.success) {
-        throw new Error('Failed to log in. Please try again.');
+          if (loginResponse.status === 200) {
+              // Başarılı giriş
+              const loginData = {
+                  success: true,
+              };
+
+              console.log(loginData);
+              onLoginSuccess(loginData);
+
+              alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.username}!`);
+              onClose();
+
+              // Anasayfaya yönlendirme
+              navigate('/');
+          } else {
+              // Giriş başarısız
+              throw new Error('Failed to log in. Please try again.');
+          }
+      } catch (error) {
+          console.error('Error during login request:', error);
+
+          if (error.response && error.response.status === 400) {
+              // Hatalı şifre durumu
+              alert('Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.');
+          } else if (error.response && error.response.status === 404) {
+              // Kullanıcı bulunamadı durumu
+              alert('Kullanıcı bulunamadı. Lütfen kayıt olun.');
+          } else {
+              // Diğer hatalar
+              alert('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+          }
       }
-
-      // Fetch additional user data based on the logged-in user's email
-      const userDataResponse = await axios.get(`http://127.0.0.1:3001/users/email/${username}`);
-      const userData = userDataResponse.data;
-
-      const loginData = {
-        success: true,
-        id: userData.user.id,
-        username: userData.user.username,
-      };
-
-      console.log(loginData);
-      onLoginSuccess(loginData);
-
-      alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.username}!`);
-      onClose();
-      navigate('/');
-    } catch (error) {
-      alert('Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.');
-    }
   };
 
   return (

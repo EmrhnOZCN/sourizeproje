@@ -62,8 +62,14 @@ public class UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
+
+            String passw = user.getPassword();
+            System.out.println(password);
+            System.out.println(user.getPassword());
             // Şifreyi kontrol et (basit bir şifre kontrolü)
-            if (password.equals(user.getPassword())) {
+            if (password.equals( passw)) {
+
+
                 // Başarılı giriş
                 return user;
             } else {
