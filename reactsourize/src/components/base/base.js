@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import './base.css';
 import 'tailwindcss/tailwind.css';
 import SignUp from '../user/SignUp';
+import Auth from "../user/Auth";
 
 // App elementini belirle
 Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -166,7 +167,7 @@ const BaseTemplate = React.memo(() => {
             backgroundColor: '#e8dfd6',
           },
         }}>
-          {/* <Auth onClose={handleLoginModalClose} onLoginSuccess={handleLoginSuccess} /> */}
+          <Auth onClose={handleLoginModalClose} onLoginSuccess={handleLoginSuccess} />
         </Modal>
 
         <Modal isOpen={isSignUpModalOpen} onRequestClose={handleSignUpModalClose} contentLabel='Kayıt Ol Modalı' style={{
