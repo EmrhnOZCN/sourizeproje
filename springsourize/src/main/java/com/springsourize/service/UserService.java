@@ -3,7 +3,7 @@ package com.springsourize.service;
 import com.springsourize.dto.CreateUserRequest;
 import com.springsourize.model.UserEntity;
 import com.springsourize.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,26 +15,30 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
     }
 
 
 
-    public Optional<UserEntity> getByUserName(String userName){
-        return userRepository.findByUsername(userName);
-    }
+
 
     public UserEntity createUser(CreateUserRequest createUserRequest){
 
+
+        // Kullanıcı adının veritabanında mevcut olup olmadığını kontrol et
+        Optional<UserEntity> existingUser = userRepository.findByUsername(createUserRequest.username());
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Bu kullanıcı adı zaten kullanılmaktadır.");
+        }
+        else {
         UserEntity newUser = UserEntity.builder()
                 .firstName(createUserRequest.firstName())
                 .lastName(createUserRequest.lastName())
                 .username(createUserRequest.username())
-                .password(bCryptPasswordEncoder.encode(createUserRequest.password()))
+                .password(createUserRequest.password())
                 .authorities(createUserRequest.authorities())
                 .accountNonExpired(true)
                 .isCredentialsNonExpired(true)
@@ -42,8 +46,10 @@ public class UserService {
                 .accountNonLocked(true)
                 .build();
 
-        return userRepository.save(newUser);
+        return userRepository.save(newUser);}
     }
+
+
 
 
 

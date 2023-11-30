@@ -1,9 +1,9 @@
 package com.springsourize.model;
 
 
-import org.springframework.security.core.GrantedAuthority;
 
-public enum RoleEntity implements GrantedAuthority {
+
+public enum RoleEntity  {
 
     ROLE_USER("USER"),
     ROLE_ADMIN("ADMIN"),
@@ -24,8 +24,5 @@ public enum RoleEntity implements GrantedAuthority {
         return this.value;
     }
 
-    @Override
-    public String getAuthority() {
-        return name();
-    }
+
 }
