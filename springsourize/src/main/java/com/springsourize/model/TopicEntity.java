@@ -19,6 +19,8 @@ public class TopicEntity {
 
     private LocalDateTime updatedTime;
 
+    private String link;
+
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostEntity> posts;
 }
