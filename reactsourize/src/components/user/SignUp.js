@@ -76,10 +76,6 @@ const SignUp = ({ onClose }) => {
           <input className='' type="password" id="password" value={password} onChange={handlePasswordChange} />
         </div>
         <button className='buttons' type="submit">Kayıt Ol</button>
-
-
-
-
       </form>
     </div>
   );

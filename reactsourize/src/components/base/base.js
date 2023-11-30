@@ -4,6 +4,8 @@ import './base.css';
 import 'tailwindcss/tailwind.css';
 import SignUp from '../user/SignUp';
 import Auth from "../user/Auth";
+import Rightmain from "../Rightmain/rightmain";
+import Leftmain from "../Leftmain/leftmain";
 
 // App elementini belirle
 Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -118,7 +120,7 @@ const BaseTemplate = React.memo(() => {
         <main className='main-template justify-center'>
 
           <div id="leftdiv" className="w-2/12 h-full mx-2 bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm">
-            {/* <Leftmain userId={userIdforSelections} selectedItems={selectedSubs} /> */}
+            <Leftmain userId={userIdforSelections} selectedItems={selectedSubs} />
           </div>
           <div id="middlediv" className=" w-4/12 h-full">
             <div id="searchbarsdiv" className="py-2 bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm">     
@@ -143,7 +145,7 @@ const BaseTemplate = React.memo(() => {
               </div>
             </div>
           <div id="rightdiv" className="bg-white w-2/12 h-full mx-2 bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm">
-            {/* <Rightmain userId={userIdforSelections} selectedItems={selectedSubs} /> */}
+            <Rightmain userId={userIdforSelections} selectedItems={selectedSubs} />
           </div>
           
           {/* <div className='main-content-template'>
