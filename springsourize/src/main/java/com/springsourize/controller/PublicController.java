@@ -1,6 +1,7 @@
 package com.springsourize.controller;
 
 import com.springsourize.dto.CreateUserRequest;
+import com.springsourize.dto.LoginUserRequest;
 import com.springsourize.model.UserEntity;
 import com.springsourize.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,14 @@ public class PublicController {
     public ResponseEntity<UserEntity> register(@RequestBody CreateUserRequest createUserRequest){
 
         return ResponseEntity.ok(userService.createUser(createUserRequest));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserEntity> login(@RequestBody LoginUserRequest loginUserRequest){
+
+
+        return ResponseEntity.ok(userService.loginUser(loginUserRequest));
+
     }
 
 }
