@@ -51,4 +51,16 @@ public class WebScraperController {
         return ResponseEntity.ok(postDtos);
     }
 
+    @GetMapping("/getBestTopics")
+    public ResponseEntity<List<TopicDto>> getBestTopics(){
+
+        List<TopicEntity> bessTopics = webScraperService.getBestTopic();
+
+        List<TopicDto> bestTopicDtos = bessTopics.stream()
+                .map(TopicDto::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(bestTopicDtos);
+
+    }
+
 }

@@ -116,4 +116,9 @@ public class WebScraperService {
 
         return postRepository.findAll();
     }
+
+    public List<TopicEntity> getBestTopic(){
+
+        return topicRepository.findRandomTopic();
+    }
 }
