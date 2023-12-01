@@ -23,4 +23,14 @@ public class TopicEntity {
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostEntity> posts;
+
+    @Override
+    public String toString() {
+        return "TopicEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", updatedTime=" + updatedTime +
+                ", link='" + link + '\'' +
+                '}';
+    }
 }

@@ -1,8 +1,10 @@
 package com.springsourize.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +17,9 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String title;
+    @Column(columnDefinition = "TEXT")
+    @JsonIgnore
+    private String textParagraph;
 
     @ManyToOne
     @JoinColumn(name = "topic_id")
@@ -27,5 +31,14 @@ public class PostEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
+
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "id=" + id +
+                ", textParagraph='" + textParagraph + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
