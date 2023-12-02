@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'tailwindcss/tailwind.css';
-import { exportClickedPostId } from '../base/base'; // Assuming base.js is in the same directory
 
-function Leftmain({}) {
+function Leftmain({ userId, selectedItems, onSelectPost }) {
   const [topics, setTopics] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -34,8 +32,7 @@ function Leftmain({}) {
   };
 
   const handlePostClick = (postId) => {
-    // Pass the clicked post's ID to the exportClickedPostId function in base.js
-    exportClickedPostId(postId);
+    onSelectPost(postId);
   };
 
   return (
@@ -47,13 +44,14 @@ function Leftmain({}) {
         <div>
           {currentItems.map((topic) => (
             <li
-              className='border-b-2 pt-2 pr-2 pl-2 border-gray-400 text-sm font-normal font-sans'
+              className='border-b-2 pt-2 pr-2 pl-2 border-gray-400 text-sm font-normal font-sans cursor-pointer'
               key={topic.id}
+              onClick={() => handlePostClick(topic.id)}
             >
-              <a href={`http://localhost:8080/api/getPosts/${topic.id}`} onClick={() => handlePostClick(topic.id)}>
+              <div>
                 <strong>{topic.title}</strong>
-                <p className=' text-2xs font-mono'>Çekilme tarihi:{topic.updatedTime}</p>
-              </a>
+                <p className='text-2xs font-mono'>Çekilme tarihi: {topic.updatedTime}</p>
+              </div>
             </li>
           ))}
         </div>

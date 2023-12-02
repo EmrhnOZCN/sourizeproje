@@ -31,7 +31,9 @@ const BaseTemplate = React.memo(() => {
   const handleLoginModalClose = () => {
     setIsLoginModalOpen(false);
   };
-
+  const handlePostClick = (postId) => {
+    setSelectedPost(postId);
+  };
   const handleSignUpModalOpen = () => {
     if (!isLoggedIn) {
       // Open the sign-up modal only if the user is not logged in
@@ -122,7 +124,7 @@ const BaseTemplate = React.memo(() => {
         <main className='main-template justify-center'>
 
           <div id="leftdiv" className="w-2/12 h-full mx-2 bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm">
-            <Leftmain userId={userIdforSelections} selectedItems={selectedSubs} />
+            <Leftmain onSelectPost={handlePostClick} />
           </div>
           <div id="middlediv" className=" w-4/12 h-full">
             <div id="searchbarsdiv" className="py-2 bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm">
@@ -142,7 +144,7 @@ const BaseTemplate = React.memo(() => {
             </div>
               <div>
                 <div className=' my-2'>
-                {/* <Posts userId={userIdforSelections} selectedItems={selectedSubs} /> */}
+                 <Summaries postId={selectedPost} />
                 </div>
               </div>
             </div>
@@ -151,7 +153,7 @@ const BaseTemplate = React.memo(() => {
           </div>
 
            <div className='main-content-template'>
-            <Summaries postId={selectedPost} />
+
           </div>
         </main>
 
