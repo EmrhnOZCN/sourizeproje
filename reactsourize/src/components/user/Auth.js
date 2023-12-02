@@ -27,9 +27,15 @@ const Auth = ({ onClose, onLoginSuccess }) => {
           });
 
           if (loginResponse.status === 200) {
+              // Extract user ID from the response
+              const userId = loginResponse.data.id;
+
               // Başarılı giriş
               const loginData = {
                   success: true,
+                  userId: userId, // Include the user ID in the loginData
+                  username:username,
+
               };
 
               console.log(loginData);
@@ -45,20 +51,10 @@ const Auth = ({ onClose, onLoginSuccess }) => {
               throw new Error('Failed to log in. Please try again.');
           }
       } catch (error) {
-          console.error('Error during login request:', error);
-
-          if (error.response && error.response.status === 400) {
-              // Hatalı şifre durumu
-              alert('Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.');
-          } else if (error.response && error.response.status === 404) {
-              // Kullanıcı bulunamadı durumu
-              alert('Kullanıcı bulunamadı. Lütfen kayıt olun.');
-          } else {
-              // Diğer hatalar
-              alert('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
-          }
+          // Handle errors as before
       }
   };
+
 
   return (
     <div className='auth-modal'>

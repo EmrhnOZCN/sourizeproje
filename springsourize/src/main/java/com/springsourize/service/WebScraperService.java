@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class WebScraperService {
@@ -107,9 +104,10 @@ public class WebScraperService {
 
 
 
-    public List<TopicEntity> getTopics() {
-
-        return topicRepository.findAll();
+    public List<TopicEntity> getTopicsByDate(LocalDateTime date) {
+        LocalDateTime startDate = date.withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime endDate = date.withHour(23).withMinute(59).withSecond(59);
+        return topicRepository.findByUpdatedTimeBetween(startDate, endDate);
     }
 
     public List<PostEntity> getPosts() {
@@ -121,4 +119,9 @@ public class WebScraperService {
 
         return topicRepository.findRandomTopic();
     }
+
+    public Optional<PostEntity> getPostById(Long postId) {
+        return postRepository.findById(postId);
+    }
+
 }

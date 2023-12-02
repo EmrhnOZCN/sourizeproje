@@ -7,12 +7,11 @@ import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
 import com.springsourize.service.WebScraperService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +34,8 @@ public class WebScraperController {
 
     @GetMapping("/getTopics")
     public ResponseEntity<List<TopicDto>> getTopics() {
-        List<TopicEntity> topics = webScraperService.getTopics();
+        LocalDateTime today = LocalDateTime.now();
+        List<TopicEntity> topics = webScraperService.getTopicsByDate(today);
         List<TopicDto> topicDtos = topics.stream()
                 .map(TopicDto::fromEntity)
                 .collect(Collectors.toList());
@@ -61,6 +61,19 @@ public class WebScraperController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(bestTopicDtos);
 
+    }
+
+    @GetMapping("/getPosts/{postId}")
+    public ResponseEntity<PostsDto> getPostById(@PathVariable Long postId) {
+        Optional<PostEntity> postOptional = webScraperService.getPostById(postId);
+
+        if (postOptional.isPresent()) {
+            PostEntity post = postOptional.get();
+            PostsDto postDto = PostsDto.fromEntity(post);
+            return ResponseEntity.ok(postDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
