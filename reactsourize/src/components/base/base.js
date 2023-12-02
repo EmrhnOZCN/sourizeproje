@@ -6,6 +6,7 @@ import SignUp from '../user/SignUp';
 import Auth from "../user/Auth";
 import Rightmain from "../Rightmain/rightmain";
 import Leftmain from "../Leftmain/leftmain";
+import Summaries from '../summaries/summaries';
 
 // App elementini belirle
 Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -19,6 +20,7 @@ const BaseTemplate = React.memo(() => {
   const [selectedSubs, setSelectedSubs] = useState([]);
   const [userIdforSelections, setUserIdForSelections] = useState(null); // Initialize user ID as null
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const[selectedPost, setSelectedPost]=useState([]);
 
   const handleLoginModalOpen = () => {
     if (!isLoggedIn) {
@@ -148,9 +150,9 @@ const BaseTemplate = React.memo(() => {
             <Rightmain userId={userIdforSelections} selectedItems={selectedSubs} />
           </div>
           
-          {/* <div className='main-content-template'>
-            <Posts userId={userIdforSelections} selectedItems={selectedSubs} />
-          </div> */}
+           <div className='main-content-template'>
+            <Summaries postId={selectedPost} />
+          </div>
         </main>
 
         <Modal isOpen={isLoginModalOpen} onRequestClose={handleLoginModalClose} contentLabel='Giriş Yap Modalı' style={{
@@ -213,5 +215,15 @@ const BaseTemplate = React.memo(() => {
     </div>
   );
 });
+let clickedPostId;
+
+export const exportClickedPostId = (postId) => {
+  clickedPostId = postId;
+  // You can perform any other logic you need here
+  console.log('Clicked Post ID:', clickedPostId);
+};
+
+// You can export other functions or variables if needed
+
 
 export default BaseTemplate;
