@@ -1,6 +1,7 @@
 package com.springsourize.service;
 
 
+import com.springsourize.dto.CommentDto;
 import com.springsourize.dto.PostCommentsDto;
 import com.springsourize.model.CommentEntity;
 import com.springsourize.model.PostEntity;
@@ -29,15 +30,15 @@ public class CommentService {
 
 
 
-    public CommentEntity addComment(Long postId, Long userId, String content) {
-        PostEntity post = postRepository.findById(postId)
+    public CommentEntity addComment(CommentDto commentDto) {
+        PostEntity post = postRepository.findById(commentDto.postId())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
-        UserEntity author = userRepository.findById(userId)
+        UserEntity author = userRepository.findById(commentDto.userId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         CommentEntity comment = new CommentEntity();
-        comment.setContent(content);
+        comment.setContent(commentDto.content());
         comment.setPost(post);
         comment.setAuthor(author);
         comment.setCreatedAt(new Date());

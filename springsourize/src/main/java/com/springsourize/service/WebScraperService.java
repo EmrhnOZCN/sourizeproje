@@ -1,8 +1,10 @@
 package com.springsourize.service;
 
 import com.springsourize.exception.CustomException;
+import com.springsourize.model.LikeEntity;
 import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
+import com.springsourize.repository.LikeRepository;
 import com.springsourize.repository.PostRepository;
 import com.springsourize.repository.TopicRepository;
 import org.jsoup.Jsoup;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WebScraperService {
@@ -22,9 +25,12 @@ public class WebScraperService {
 
     private final PostRepository postRepository;
 
-    public WebScraperService(TopicRepository topicRepository, PostRepository postRepository) {
+    private final LikeRepository likeRepository;
+
+    public WebScraperService(TopicRepository topicRepository, PostRepository postRepository, LikeRepository likeRepository) {
         this.topicRepository = topicRepository;
         this.postRepository = postRepository;
+        this.likeRepository = likeRepository;
     }
 
     public void scrapeWebsite(String url) {
@@ -115,11 +121,25 @@ public class WebScraperService {
         return postRepository.findAll();
     }
 
-    public List<TopicEntity> getBestTopic(){
+    public List<TopicEntity> getBestTopics() {
+        List<LikeEntity> likes = likeRepository.findAll();
 
-        return topicRepository.findRandomTopic();
+        // Her bir postun beğeni sayısını toplamak için bir Map oluştur
+        Map<PostEntity, Long> postLikeCountMap = likes.stream()
+                .collect(Collectors.groupingBy(LikeEntity::getPost, Collectors.counting()));
+
+        // En fazla beğeni alan 6 postu bul
+        List<PostEntity> maxLikedPosts = postLikeCountMap.entrySet().stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .limit(6)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        // En fazla beğeni alan postların ait olduğu topic'leri çek
+        return maxLikedPosts.stream()
+                .map(PostEntity::getTopic)
+                .collect(Collectors.toList());
     }
-
     public Optional<PostEntity> getPostById(Long postId) {
         return postRepository.findById(postId);
     }

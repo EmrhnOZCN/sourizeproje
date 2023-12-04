@@ -1,3 +1,4 @@
+// Auth.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,6 +8,7 @@ import '../base/base.css';
 const Auth = ({ onClose, onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -18,43 +20,38 @@ const Auth = ({ onClose, onLoginSuccess }) => {
   };
 
   const handleLogin = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      try {
-          const loginResponse = await axios.post('http://localhost:8080/public/login', {
-              username,
-              password,
-          });
+    try {
+      const loginResponse = await axios.post('http://localhost:8080/public/login', {
+        username,
+        password,
+      });
 
-          if (loginResponse.status === 200) {
-              // Extract user ID from the response
-              const userId = loginResponse.data.id;
+      if (loginResponse.status === 200) {
+        const user = loginResponse.data;
 
-              // Başarılı giriş
-              const loginData = {
-                  success: true,
-                  userId: userId, // Include the user ID in the loginData
-                  username:username,
+        setLoggedInUser(user);
 
-              };
+        const loginData = {
+          success: true,
+          userId: user.id,
+          username: user.username,
+        };
 
-              console.log(loginData);
-              onLoginSuccess(loginData);
+        onLoginSuccess(loginData);
 
-              alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.username}!`);
-              onClose();
+        alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.username}!`);
+        onClose();
 
-              // Anasayfaya yönlendirme
-              navigate('/');
-          } else {
-              // Giriş başarısız
-              throw new Error('Failed to log in. Please try again.');
-          }
-      } catch (error) {
-          // Handle errors as before
+        navigate(`/kullanici/${user.id}`);
+      } else {
+        throw new Error('Giriş başarısız. Lütfen tekrar deneyin.');
       }
+    } catch (error) {
+      console.error('Giriş hatası:', error);
+    }
   };
-
 
   return (
     <div className='auth-modal'>

@@ -23,10 +23,7 @@ public class PublicController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String getUserPublic() {
-        return "hello";
-    }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserEntity> register(@RequestBody CreateUserRequest createUserRequest){

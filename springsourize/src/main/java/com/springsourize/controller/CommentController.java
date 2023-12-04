@@ -1,5 +1,6 @@
 package com.springsourize.controller;
 
+import com.springsourize.dto.CommentDto;
 import com.springsourize.dto.PostCommentsDto;
 import com.springsourize.model.CommentEntity;
 import com.springsourize.service.CommentService;
@@ -18,10 +19,12 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CommentEntity> addComment(@RequestParam Long postId, @RequestParam Long userId, @RequestParam String content) {
-        CommentEntity addedComment = commentService.addComment(postId, userId, content);
+    public ResponseEntity<CommentEntity> addComment(@RequestBody CommentDto commentDto) {
+
+        CommentEntity addedComment = commentService.addComment(commentDto);
         return new ResponseEntity<>(addedComment, HttpStatus.CREATED);
     }
+
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<PostCommentsDto> getCommentsByPostId(@PathVariable Long postId) {

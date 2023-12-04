@@ -5,6 +5,7 @@ import com.springsourize.dto.PostsDto;
 import com.springsourize.dto.TopicDto;
 import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
+
 import com.springsourize.service.WebScraperService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class WebScraperController {
 
     public WebScraperController(WebScraperService webScraperService) {
         this.webScraperService = webScraperService;
+
     }
 
 
@@ -54,7 +56,7 @@ public class WebScraperController {
     @GetMapping("/getBestTopics")
     public ResponseEntity<List<TopicDto>> getBestTopics(){
 
-        List<TopicEntity> bessTopics = webScraperService.getBestTopic();
+        List<TopicEntity> bessTopics = webScraperService.getBestTopics();
 
         List<TopicDto> bestTopicDtos = bessTopics.stream()
                 .map(TopicDto::fromEntity)
@@ -75,5 +77,7 @@ public class WebScraperController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }

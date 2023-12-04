@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -32,6 +31,10 @@ public class PostEntity {
     private List<LikeEntity> likes;
 
     private LocalDateTime createdAt;
+
+    // Sadece bu satırı tutun
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private SummariesEntity summary;
 
     @Override
     public String toString() {
