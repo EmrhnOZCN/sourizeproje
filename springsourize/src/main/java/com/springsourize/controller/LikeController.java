@@ -43,4 +43,6 @@ public class LikeController {
         Map<String, Boolean> response = Collections.singletonMap("isLiked", isLiked);
         return ResponseEntity.ok(response);
     }
+
+
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CommentBox({ postId, onCommentAdd }) {
   const [newComment, setNewComment] = useState('');
@@ -15,13 +17,13 @@ function CommentBox({ postId, onCommentAdd }) {
   const handleAddComment = async () => {
     try {
       if (!newComment.trim()) {
-        console.error('Yorum boş olamaz.');
+        toast.error('Yorum boş olamaz.');
         return;
       }
 
       // Kontrol et: userId var mı?
       if (userId === null || userId === undefined) {
-        console.error('userId eksik.');
+        toast.error('userId eksik.');
         return;
       }
 
@@ -34,11 +36,13 @@ function CommentBox({ postId, onCommentAdd }) {
       if (response.status === 201) {
         onCommentAdd(response.data.newComment);
         setNewComment('');
+        toast.success('Yorum başarıyla eklendi.');
       } else {
-        console.error('Yorum eklenirken bir hata oluştu.');
+        toast.error('Yorum eklenirken bir hata oluştu.');
       }
     } catch (error) {
       console.error('Error adding comment:', error);
+      toast.error('Yorum eklenirken bir hata oluştu.');
     }
   };
 
@@ -54,6 +58,7 @@ function CommentBox({ postId, onCommentAdd }) {
       <button className="text-green-500 px-4 py-2 rounded-md" onClick={handleAddComment}>
         Yorum Yap
       </button>
+      <ToastContainer />
     </div>
   );
 }

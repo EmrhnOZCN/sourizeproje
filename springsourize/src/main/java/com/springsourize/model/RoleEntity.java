@@ -7,12 +7,8 @@ public enum RoleEntity  {
 
     ROLE_USER("USER"),
     ROLE_ADMIN("ADMIN"),
-
     ROLE_MOD("MOD"),
     ROLE_FSK("FSK");
-
-    ;
-
 
     private String value;
 
@@ -23,6 +19,8 @@ public enum RoleEntity  {
     public String getValue() {
         return this.value;
     }
+
+
 
 
 }

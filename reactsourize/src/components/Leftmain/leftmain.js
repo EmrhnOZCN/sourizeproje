@@ -12,7 +12,7 @@
       const itemsPerPage = 10;
       const navigate = useNavigate();
       const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
+console.log(localStorage)
       useEffect(() => {
         const fetchData = async () => {
           try {

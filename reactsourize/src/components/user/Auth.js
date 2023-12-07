@@ -1,14 +1,14 @@
-// Auth.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import '../base/base.css';
 
+// ... (import statements remain unchanged)
+
 const Auth = ({ onClose, onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedInUser, setLoggedInUser] = useState(null);
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -29,27 +29,44 @@ const Auth = ({ onClose, onLoginSuccess }) => {
       });
 
       if (loginResponse.status === 200) {
-        const user = loginResponse.data;
-
-        setLoggedInUser(user);
-
+        // Başarılı giriş
         const loginData = {
           success: true,
-          userId: user.id,
-          username: user.username,
+          userId: loginResponse.data.userId,
+          firstName:loginResponse.data.firstName,
+          lastName:loginResponse.data.lastName,// Assuming the userId is present in the response
         };
 
+        console.log(loginData);
         onLoginSuccess(loginData);
 
-        alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.username}!`);
+        // Save userId in localStorage
+        localStorage.setItem('userId', loginData.userId);
+        localStorage.setItem('firstName', loginData.firstName);
+        localStorage.setItem('lastName', loginData.lastName);
+
+        alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.firstName + loginData.lastName }!`);
         onClose();
 
-        navigate(`/kullanici/${user.id}`);
+        // Anasayfaya yönlendirme
+       navigate(`/${loginData.userId}`);
       } else {
-        throw new Error('Giriş başarısız. Lütfen tekrar deneyin.');
+        // Giriş başarısız
+        throw new Error('Failed to log in. Please try again.');
       }
     } catch (error) {
-      console.error('Giriş hatası:', error);
+      console.error('Error during login request:', error);
+
+      if (error.response && error.response.status === 400) {
+        // Hatalı şifre durumu
+        alert('Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.');
+      } else if (error.response && error.response.status === 404) {
+        // Kullanıcı bulunamadı durumu
+        alert('Kullanıcı bulunamadı. Lütfen kayıt olun.');
+      } else {
+        // Diğer hatalar
+        alert('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      }
     }
   };
 

@@ -11,7 +11,7 @@ const override = css`
   border-color: red;
 `;
 
-function Summaries({ postId,userId }) {
+function Summaries({ postId }) {
   const [postSummary, setPostSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [likeCount, setLikeCount] = useState(0);
@@ -20,10 +20,11 @@ function Summaries({ postId,userId }) {
   const [newComment, setNewComment] = useState('');
   const [loadedComments, setLoadedComments] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [firstName, setFirstName] = useState(''); // Değerleri string olarak değiştir
+  const [lastName, setLastName] = useState(''); // Değerleri string olarak değiştir
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-
-    console.log('User ID in Summaries:', userId);
     const fetchPostSummary = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/getPosts/${postId}`);
@@ -43,14 +44,28 @@ function Summaries({ postId,userId }) {
         const likeStatusResponse = await axios.get(`http://localhost:8080/api/likes/like`, {
           params: {
             postId: postId,
-            userId: 1,
+            userId: userId,
           },
         });
+
         setIsLiked(likeStatusResponse.data.isLiked);
       } catch (error) {
         console.error('Post detayları çekme hatası:', error);
       }
     };
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/public/getUser/${userId}`);
+        setLastName(response.data.lastName);
+        setFirstName(response.data.firstName);
+        console.log(userId)
+        console.log(response.data.firstName); // Move the console.log here
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
 
     const fetchComments = async () => {
       try {
@@ -66,9 +81,10 @@ function Summaries({ postId,userId }) {
       setLoading(true);
       fetchPostSummary();
       fetchPostDetails();
+      fetchUserData(); // fetchUserData fonksiyonunu çağır
       fetchComments();
     }
-  }, [postId]);
+  }, [postId, userId]);
 
   const handleSummarizeClick = async () => {
     // Özetleme işlemleri burada yapılacak
@@ -97,13 +113,14 @@ function Summaries({ postId,userId }) {
           <p>{postSummary?.textParagraph}</p>
           <div className="flex justify-between mt-4">
             <div>
-              <LikeButton postId={postId} initialLikeCount={likeCount} initialIsLiked={isLiked} />
+              <LikeButton
+                postId={postId}
+                initialIsLiked={isLiked}
+                onLikeCountChange={(newLikeCount) => setLikeCount(newLikeCount)}
+              />
             </div>
             <div className="flex items-center">
-            <CommentBox postId={postId} userId={userId} onCommentAdd={(newComment) => setLoadedComments([...loadedComments, newComment])} />
-
-
-
+              <CommentBox postId={postId} userId={userId} onCommentAdd={(newComment) => setLoadedComments([...loadedComments, newComment])} />
             </div>
           </div>
           <div className="mt-2">
@@ -113,10 +130,9 @@ function Summaries({ postId,userId }) {
                 <ul>
                   {loadedComments.slice(0).reverse().map((comment) => (
                     <li key={comment?.id} className="mb-2">
-                      <strong>{comment?.userId}</strong>: {comment?.content}
+                      <strong>{firstName + ' ' + lastName}</strong>: {comment?.content}
                     </li>
                   ))}
-
                 </ul>
               </>
             )}
