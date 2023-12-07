@@ -55,27 +55,42 @@ const SignUp = ({ onClose }) => {
     setPassword(e.target.value);
   };
   return (
-    <div className="signup-modal">
-      <h2 className='better-htags'>Kayıt Ol</h2>
-      <form onSubmit={handleSignUp}>
+    <div className="w-full h-full bg-white rounded-2xl relative">
+      {/* Close button */}
+      <button
+        className="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-2xl font-mono font-extrabold"
+        onClick={onClose}
+      >
+        X
+      </button>
+      {/* Filigree overlay
+      <div className="bg-filigree-once"></div> */}
+      <div id='toptext' className='pt-2'>
+        <h1 className='uppercase font-medium text-center text-3xl mt-8'>Kaydol</h1>
+        <h3 className='font-thin text-center text-sm'><i>Özetleri görüntülemek için hesap oluşturmanız lazım.</i></h3>
+      </div>
+      <form onSubmit={handleSignUp} className=' pl-4 pt-4'>
         <div className="form-group">
-          <label className='better-labels' htmlFor="email">İsim: </label>
-          <input className='' type="text" id="firstName" value={firstName} onChange={handleFirstNameChange} />
+          <label className='better-labels' htmlFor="email">İsim </label>
+          <input className='better-inputs' type="text" id="firstName" value={firstName} onChange={handleFirstNameChange} />
         </div>
         <div className="form-group">
-          <label className='better-labels' htmlFor="email">Soyisim: </label>
-          <input className='' type="text" id="lastName" value={lastName} onChange={handleLastNameChange} />
+          <label className='better-labels' htmlFor="email">Soyisim </label>
+          <input className='better-inputs' type="text" id="lastName" value={lastName} onChange={handleLastNameChange} />
         </div>
         <div className="form-group">
-          <label className='better-labels' htmlFor="firstName">E-mail: </label>
-          <input className='' type="text" id="username" value={username} onChange={handleUsernameChange} />
+          <label className='better-labels' htmlFor="firstName">E-mail </label>
+          <input className='better-inputs' type="text" id="username" value={username} onChange={handleUsernameChange} />
         </div>
 
         <div className="form-group">
-          <label className='better-labels' htmlFor="password">Şifre: </label>
-          <input className='' type="password" id="password" value={password} onChange={handlePasswordChange} />
+          <label className='better-labels' htmlFor="password">Şifre </label>
+          <input className='better-inputs' type="password" id="password" value={password} onChange={handlePasswordChange} />
         </div>
-        <button className='buttons' type="submit">Kayıt Ol</button>
+        <div className='text-center'>
+          <button className='buttons ' type="submit">Kaydol</button>
+        </div>
+        
       </form>
     </div>
   );

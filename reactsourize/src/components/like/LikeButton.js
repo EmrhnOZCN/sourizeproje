@@ -1,6 +1,8 @@
 // LikeButton.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import unlikeIcon from '../img/icons8-star-50.png';
+import likeIcon from'../img/icons8-star-48.png'
 
 function LikeButton({ postId, onLikeCountChange, initialLikeCount, initialIsLiked }) {
   const [likeCount, setLikeCount] = useState(initialLikeCount);
@@ -55,7 +57,7 @@ function LikeButton({ postId, onLikeCountChange, initialLikeCount, initialIsLike
 
   return (
     <button className={`mr-2 text-blue-500 ${isLiked ? 'text-red-500' : ''}`} onClick={handleLikeClick}>
-      {isLiked ? '❤️' : '🤍'} Like ({likeCount})
+      <img src={isLiked ? unlikeIcon : likeIcon} alt={isLiked ? 'Unlike' : 'Like'} style={{ width: '30px', height: '30px', marginRight: '5px' }} />
     </button>
   );
 }

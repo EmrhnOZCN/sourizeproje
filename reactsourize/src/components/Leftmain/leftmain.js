@@ -52,7 +52,7 @@ console.log(localStorage)
 
       return (
         <div className='bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm'>
-          <h2 className='text-center bg-orange text-gray-50 text-md font-medium rounded-t-md'>
+          <h2 className='text-center bg-green-500   text-gray-50 text-md font-medium rounded-t-md'>
             Gündemdekiler
           </h2>
           <ul>
@@ -71,25 +71,25 @@ console.log(localStorage)
               ))}
             </div>
           </ul>
-          <div className='flex justify-between items-center mt-2 border-t p-2'>
+          <div className='flex justify-between items-center mt-2  p-2'>
             <p className='text-2xs text-gray-500 flex items-center'>
               Gündemdekiler 24 saatte bir yenilenmektedir
             </p>
             <div className='flex'>
               {currentPage > 1 && (
                 <button
-                  className='bg-blue-500 text-white px-2 py-1 rounded-md mr-2'
+                  className='bg-green-500 text-white px-2 py-1 rounded-md mr-2'
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
-                  Previous
+                  Önceki
                 </button>
               )}
               {currentPage < totalPages && (
                 <button
-                  className='bg-blue-500 text-white px-2 py-1 rounded-md'
+                  className='bg-green-500 text-white px-2 py-1 rounded-md'
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
-                  Next
+                  Sonraki
                 </button>
               )}
             </div>

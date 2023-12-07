@@ -47,15 +47,15 @@ function CommentBox({ postId, onCommentAdd }) {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center  w-11/12">
       <input
         type="text"
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
         placeholder="Yorumunuzu buraya yazın..."
-        className="mr-2 border p-1 flex-grow"
+        className="mr-2 border p-1 flex-grow rounded-md w-5/12"
       />
-      <button className="text-green-500 px-4 py-2 rounded-md" onClick={handleAddComment}>
+      <button className="buttons" onClick={handleAddComment}>
         Yorum Yap
       </button>
       <ToastContainer />

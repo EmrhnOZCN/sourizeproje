@@ -6,7 +6,7 @@
   }
   .header-template{
     @apply bg-header-bg flex
-    border-b-4 border-r-0 border-l-0 border-t-0 border-slate-100 border-solid border-spacing-1 mx-auto items-center justify-evenly
+    border-b-4 border-r-0 border-l-0 border-t-0 border-slate-100 border-solid border-spacing-1 mx-auto items-center justify-around
     font-sans h-16
   }
   .main-template{
@@ -25,7 +25,7 @@
     @apply text-xl font-medium  no-underline text-eksi-yesili items-center flex
   }
   .header-logo-version-template{
-    @apply text-xs font-light text-black
+    @apply text-xs font-light text-black font-mono text-end
   }
   .platform-switch{
     @apply bg-reddit-grisi rounded-full py-1 -mt-3
@@ -37,15 +37,12 @@
     @apply  w-96 h-7 rounded-lg bg-koyu-reddit-grisi dark:placeholder-orange dark:placeholder:font-semibold
   }
   .buttons{
-    @apply items-center h-8 font-bold text-sm text-ellipsis  text-orange rounded-xl
-     hover:bg-orange border-none hover:text-white
-      bg-header-bg focus:outline-none px-4 py-1 transition duration-300 ease-in-out hover:shadow-lg hover:shadow-orange mt-2
+    @apply items-center h-8 font-bold text-sm text-ellipsis  text-green-500 rounded-xl
+     hover:bg-green-500 border-none hover:text-white
+      bg-header-bg focus:outline-none px-4 py-1 transition duration-300 ease-in-out hover:shadow-lg hover:shadow-green-500 mt-2
   }
   .auth-modal{
     @apply px-10 py-10
-  }
-  .signup-modal{
-    @apply px-10 py-3
   }
   .navbar-contents{
     @apply items-center
@@ -70,13 +67,16 @@
     @apply no-underline text-reddit-fontcolor
   }
   .better-htags{
-    @apply px-2 text-4xl font-medium text-eksi-yesili font-sans
+    @apply px-2 text-4xl font-medium font-sans
   }
   .better-labels{
-    @apply text-base font-medium text-eksi-yesili text-lg font-sans
+    @apply text-base font-medium font-sans font-normal text-sm
   }
   .better-inputs{
-    @apply text-sm rounded-lg focus:ring-blue-500
-     focus:border-blue-500 block w-5/12 h-3 p-2.5 dark:placeholder-gray-400
-     text-reddit-fontcolor dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4 font-sans
+    @apply w-2/3 bg-gray-50 text-sm rounded-sm  block border-b-green-500 border-r-green-500 border-t-gray-200 border-l-gray-200 border-t border-l border-b border-r focus:ring-0
+     text-reddit-fontcolor  mb-4 font-sans outline-none
+  
+  }
+  .form-group{
+    @apply pt-3
   }

@@ -15,7 +15,6 @@ function Summaries({ postId }) {
   const [postSummary, setPostSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [likeCount, setLikeCount] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loadedComments, setLoadedComments] = useState([]);
@@ -23,6 +22,7 @@ function Summaries({ postId }) {
   const [firstName, setFirstName] = useState(''); // Değerleri string olarak değiştir
   const [lastName, setLastName] = useState(''); // Değerleri string olarak değiştir
   const userId = localStorage.getItem('userId');
+  const [SummarizedText, setSummarizedText] = useState(''); // Değerleri string olarak değiştir
 
   useEffect(() => {
     const fetchPostSummary = async () => {
@@ -87,9 +87,8 @@ function Summaries({ postId }) {
   }, [postId, userId]);
 
   const handleSummarizeClick = async () => {
-    // Özetleme işlemleri burada yapılacak
-    // Örneğin: const summarizedText = await summarizeFunction(postSummary?.textParagraph);
-    // setSummarizedText(summarizedText);
+    // const summarizedText = await summarizeFunction(postSummary?.textParagraph);
+    setSummarizedText('sex'); // Set the desired value for SummarizedText
   };
 
   return (
@@ -100,42 +99,43 @@ function Summaries({ postId }) {
         </div>
       ) : (
         <>
-          <h2 className="text-xl font-bold mb-2" style={{ marginRight: '50px' }}>
-            Seçilen Post
-          </h2>
-          <button
-            style={{ position: 'absolute', top: 10, right: 15 }}
-            className="bg-green-500 text-white px-3 py-1 rounded-md"
-            onClick={handleSummarizeClick}
-          >
-            Özetle
-          </button>
-          <p>{postSummary?.textParagraph}</p>
-          <div className="flex justify-between mt-4">
-            <div>
+            <div className='w-1/6'>
               <LikeButton
                 postId={postId}
                 initialIsLiked={isLiked}
                 onLikeCountChange={(newLikeCount) => setLikeCount(newLikeCount)}
               />
             </div>
-            <div className="flex items-center">
+          <h2 className="text-xl font-bold mb-2 text-center font-normal" >
+            Seçilen Post
+          </h2>
+          <button
+            style={{ position: 'absolute', top: 10, right: 15 }}
+            className="buttons"
+            onClick={handleSummarizeClick}
+          >
+            Özetle
+          </button >
+          <p>{postSummary?.textParagraph}</p>
+          <div className="flex justify-around mt-4">
+            <div className="flex items-center w-5/6 ">
               <CommentBox postId={postId} userId={userId} onCommentAdd={(newComment) => setLoadedComments([...loadedComments, newComment])} />
             </div>
           </div>
           <div className="mt-2">
-            {loadedComments.length > 0 && (
-              <>
-                <h3 className="text-lg font-bold mb-2">Yorumlar</h3>
-                <ul>
-                  {loadedComments.slice(0).reverse().map((comment) => (
-                    <li key={comment?.id} className="mb-2">
-                      <strong>{firstName + ' ' + lastName}</strong>: {comment?.content}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+           {loadedComments.length > 0 && (
+             <>
+               <h3 className="text-lg font-bold mb-2">Yorumlar</h3>
+               <ul>
+                 {loadedComments.slice(0).reverse().map((comment) => (
+                   <li key={comment?.id} className="mb-2">
+                     <strong>{comment?.firstName} {comment?.lastName}</strong>: {comment?.content}
+                   </li>
+                 ))}
+               </ul>
+             </>
+           )}
+
           </div>
         </>
       )}
