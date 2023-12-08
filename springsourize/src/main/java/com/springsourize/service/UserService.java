@@ -2,12 +2,16 @@ package com.springsourize.service;
 
 import com.springsourize.dto.CreateUserRequest;
 import com.springsourize.dto.LoginUserRequest;
+import com.springsourize.model.RoleEntity;
 import com.springsourize.model.UserEntity;
 import com.springsourize.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -42,12 +46,16 @@ public class UserService {
         if (existingUser.isPresent()) {
             throw new IllegalArgumentException("Bu kullanıcı adı zaten kullanılmaktadır.");
         } else {
+
+            RoleEntity roleEntity = new RoleEntity();
+            roleEntity.setRole("ROLE_USER");
+            roleEntity.setLastUpdated(LocalDateTime.now() );
             UserEntity newUser = UserEntity.builder()
                     .firstName(createUserRequest.firstName())
                     .lastName(createUserRequest.lastName())
                     .username(createUserRequest.username())
                     .password(createUserRequest.password())
-                    .authorities(createUserRequest.authorities())
+                    .rolesEntity(roleEntity)
                     .accountNonExpired(true)
                     .isCredentialsNonExpired(true)
                     .isEnabled(true)
@@ -64,6 +72,7 @@ public class UserService {
         String password = loginUserRequest.password();
 
         Optional<UserEntity> userOptional = userRepository.findByUsername(username);
+
 
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
@@ -84,6 +93,25 @@ public class UserService {
             }
         } else {
             // Kullanıcı bulunamadı
+            throw new IllegalArgumentException("Kullanıcı bulunamadı");
+        }
+    }
+    public void upgradeToPremium(Long userId) {
+        Optional<UserEntity> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+
+            if ("ROLE_USER".equals(user.getRolesEntity().getRole())) {
+                // Kullanıcının rolünü güncelle
+                user.getRolesEntity().setRole("ROLE_PREMIUM");
+
+                // Kullanıcıyı kaydet
+                userRepository.save(user);
+            } else {
+                throw new IllegalArgumentException("Kullanıcı zaten ROLE_PREMIUM rolüne sahip veya başka bir rolü var.");
+            }
+        } else {
             throw new IllegalArgumentException("Kullanıcı bulunamadı");
         }
     }

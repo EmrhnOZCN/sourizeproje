@@ -21,7 +21,7 @@ const SignUp = ({ onClose }) => {
         lastName,
         username,
         password,
-        authorities: ['ROLE_USER'],
+
       });
 
       // Check the response status

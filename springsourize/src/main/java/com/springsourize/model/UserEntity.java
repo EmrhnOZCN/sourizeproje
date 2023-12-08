@@ -42,11 +42,9 @@ public class UserEntity  {
 
 
 
-    @ElementCollection(targetClass = RoleEntity.class,fetch = FetchType.EAGER)
-    @JoinTable(name=" authorities",joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "roles",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Set<RoleEntity> authorities;
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private RoleEntity  rolesEntity;
 
 
 

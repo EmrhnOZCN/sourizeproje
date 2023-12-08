@@ -47,7 +47,7 @@ console.log(localStorage)
 
            const userId = localStorage.getItem('userId');
            const role = localStorage.getItem('role');
-           const url = `/role/${role.toLowerCase()}/${userId}/post/${postId}`
+           const url = `/${role}/kullanici#${userId}/post/${postId}`
 
                navigate(url);
         } else {

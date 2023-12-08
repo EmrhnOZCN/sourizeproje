@@ -30,7 +30,8 @@ public class WebScraperController {
 
     @GetMapping("/scrape")
     public void scrapeWebsite() {
-
+        String url = "https://www.haberler.com/guncel/";
+        webScraperService.scrapeWebsite(url);
 
     }
 

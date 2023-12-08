@@ -12,5 +12,7 @@ public class AuthResponse {
     String lastName;
     Long userId;
 
+    String role;
+
 
 }

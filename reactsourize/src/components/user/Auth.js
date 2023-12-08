@@ -35,6 +35,7 @@ const Auth = ({ onClose, onLoginSuccess }) => {
           userId: loginResponse.data.userId,
           firstName:loginResponse.data.firstName,
           lastName:loginResponse.data.lastName,// Assuming the userId is present in the response
+          role:loginResponse.data.role,
         };
 
         console.log(loginData);
@@ -44,13 +45,14 @@ const Auth = ({ onClose, onLoginSuccess }) => {
         localStorage.setItem('userId', loginData.userId);
         localStorage.setItem('firstName', loginData.firstName);
         localStorage.setItem('lastName', loginData.lastName);
+        localStorage.setItem('role',loginData.role);
 
 
         alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.firstName + loginData.lastName }!`);
         onClose();
 
         // Anasayfaya yönlendirme
-        navigate(`/role/user/${loginData.userId}/`);
+        navigate(`/${loginData.role}/user#${loginData.userId}/`);
       } else {
         // Giriş başarısız
         throw new Error('Failed to log in. Please try again.');

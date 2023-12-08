@@ -10,6 +10,7 @@
     import { useNavigate } from 'react-router-dom';
     import logo from '../img/SOUR.png';
     import userIcon from '../img/user.png';
+    import PremiumModalContent from '../premium/PremiumModalContent';
 
     // App elementini belirle
     Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -24,7 +25,8 @@
       const [userIdforSelections, setUserIdForSelections] = useState(null); // Initialize user ID as null
       const [selectedPlatforms, setSelectedPlatforms] = useState([]);
       const [selectedPost, setSelectedPost] = useState(null);
-
+        const userId = localStorage.getItem('userId');
+        const role = localStorage.getItem('role');
       const navigate = useNavigate();
 
       // handleLoginSuccess fonksiyonunu useEffect kapsamı dışında tanımla
@@ -70,6 +72,7 @@
         e.preventDefault(); // Prevent the default navigation behavior
 
         // Reload the current page
+        navigate(`/${role}/kullanici#${userId}/`);
         window.location.reload();
       };
 
@@ -87,6 +90,19 @@
       const handleSignUpModalClose = () => {
         setIsSignUpModalOpen(false);
       };
+      const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
+
+        const handlePremiumButtonClick = () => {
+          setIsPremiumModalOpen(true);
+          // Burada premium tuşuna tıklanınca gerçekleşecek işlemleri yapabilirsiniz
+          // Örneğin:
+          // handlePremiumFeatures();
+        };
+
+        const handlePremiumModalClose = () => {
+          setIsPremiumModalOpen(false);
+        };
+
 
       const handleLogout = () => {
         setIsLoggedIn(false);
@@ -147,6 +163,11 @@
               {isLoggedIn ? (
                 <>
                   <div id='buttonsloggedin' className=' xs:w-1/4 sm:w-4/12 lg:w-2/12'>
+                   {role === 'ROLE_USER' && (
+                          <button className='buttons xs:w-1/2' onClick={handlePremiumButtonClick}>
+                            Premium
+                          </button>
+                        )}
 
                     {/* Logout button */}
                     <button className='buttons xs:w-1/2' onClick={handleLogout}>
@@ -198,7 +219,38 @@
                 <Rightmain userId={userIdforSelections} selectedItems={selectedSubs} onSelectPost={handlePostClick} />
               </div>
             </main>
+ <Modal
+        isOpen={isPremiumModalOpen}
+        onRequestClose={handlePremiumModalClose}
+        contentLabel='Premium İçerik Modalı'
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            zIndex: 1000,
+          },
+          content: {
+            width: 'auto',
+            maxWidth: '40%', // Örneğin '60%' olarak değiştirebilirsiniz.
+            height: 'auto',
+            maxHeight: '70vh',
+            margin: '0 auto',
+            border: 'none',
+            borderRadius: '15px',
+            backgroundColor: 'transparent',
+            padding: 20,
+            overflow: 'visible',
+            position: 'relative', // Konum belirtilmeli
+          },
+        }}
+      >
+        {/* Kapatma tuşu */}
+        <button onClick={handlePremiumModalClose} style={{ position: 'absolute', top: '20px', right: '30px', fontSize: '22px', cursor: 'pointer', padding: '10px', border: 'none', background: 'none', color: '#fff' }}>
+          &#x2715; {/* Unicode karakteri: Çarpı işareti (X) */}
+        </button>
 
+        {/* Premium içeriği buraya ekleyin */}
+        <PremiumModalContent />
+      </Modal>
             <Modal isOpen={isLoginModalOpen} onRequestClose={handleLoginModalClose} contentLabel='Giriş Yap Modalı' style={{
               overlay: {
                 backgroundColor: 'rgba(0, 0, 0, 0.5)', // Set background color to transparent
