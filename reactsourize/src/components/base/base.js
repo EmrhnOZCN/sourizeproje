@@ -141,7 +141,7 @@
                   <img src={logo} className=''></img>
                 </div>
                 <div className='items-end'>
-                  <span className='header-logo-version-template'> v.1.0</span>
+                  <span className='header-logo-version-template'> v.1.0.0</span>
                 </div>
               </a>
               {isLoggedIn ? (

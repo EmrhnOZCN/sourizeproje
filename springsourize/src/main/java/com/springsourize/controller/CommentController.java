@@ -33,9 +33,9 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<String> removeComment(@PathVariable Long commentId, @RequestParam Long userId) {
+    public ResponseEntity<String> removeComment(@PathVariable Long commentId) {
         try {
-            commentService.removeComment(commentId, userId);
+            commentService.removeComment(commentId);
             return ResponseEntity.ok("Yorum başarıyla kaldırıldı.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

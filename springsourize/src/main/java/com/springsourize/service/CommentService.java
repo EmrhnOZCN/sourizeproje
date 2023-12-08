@@ -53,14 +53,12 @@ public class CommentService {
         return PostCommentsDto.fromEntity(post);
     }
 
-    public void removeComment(Long commentId, Long userId) {
+    public void removeComment(Long commentId) {
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
         // Yorumu atan kişiyle, yorumun sahibinin aynı kişi olduğunu kontrol et
-        if (!comment.getAuthor().getId().equals(userId)) {
-            throw new IllegalArgumentException("Bu yorumu kaldırma izniniz yok.");
-        }
+
 
         // Yorumu kaldır
         commentRepository.delete(comment);

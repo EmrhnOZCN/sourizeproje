@@ -19,10 +19,11 @@ function Summaries({ postId }) {
   const [newComment, setNewComment] = useState('');
   const [loadedComments, setLoadedComments] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [firstName, setFirstName] = useState(''); // Değerleri string olarak değiştir
-  const [lastName, setLastName] = useState(''); // Değerleri string olarak değiştir
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const userId = localStorage.getItem('userId');
-  const [SummarizedText, setSummarizedText] = useState(''); // Değerleri string olarak değiştir
+  const [SummarizedTitle, setSummarizedTitle] = useState('');
+  const [showSummary, setShowSummary] = useState(false);
 
   useEffect(() => {
     const fetchPostSummary = async () => {
@@ -59,13 +60,10 @@ function Summaries({ postId }) {
         const response = await axios.get(`http://localhost:8080/public/getUser/${userId}`);
         setLastName(response.data.lastName);
         setFirstName(response.data.firstName);
-        console.log(userId)
-        console.log(response.data.firstName); // Move the console.log here
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-
 
     const fetchComments = async () => {
       try {
@@ -81,14 +79,19 @@ function Summaries({ postId }) {
       setLoading(true);
       fetchPostSummary();
       fetchPostDetails();
-      fetchUserData(); // fetchUserData fonksiyonunu çağır
+      fetchUserData();
       fetchComments();
     }
   }, [postId, userId]);
 
   const handleSummarizeClick = async () => {
-    // const summarizedText = await summarizeFunction(postSummary?.textParagraph);
-    setSummarizedText('sex'); // Set the desired value for SummarizedText
+    // Burada sadece başlık olarak özetleme yapılır, ayrı bir API çağrısı yapılmasına gerek yok
+    setSummarizedTitle('Özet ');
+    setShowSummary(true);
+  };
+
+  const handleGoBackClick = () => {
+    setShowSummary(false);
   };
 
   return (
@@ -99,43 +102,61 @@ function Summaries({ postId }) {
         </div>
       ) : (
         <>
-            <div className='w-1/6'>
-              <LikeButton
-                postId={postId}
-                initialIsLiked={isLiked}
-                onLikeCountChange={(newLikeCount) => setLikeCount(newLikeCount)}
-              />
-            </div>
+          <div className='w-1/6'>
+            <LikeButton
+              postId={postId}
+              initialIsLiked={isLiked}
+              onLikeCountChange={(newLikeCount) => setLikeCount(newLikeCount)}
+            />
+          </div>
           <h2 className="text-xl font-bold mb-2 text-center font-normal" >
             Seçilen Post
           </h2>
-          <button
-            style={{ position: 'absolute', top: 10, right: 15 }}
-            className="buttons"
-            onClick={handleSummarizeClick}
-          >
-            Özetle
-          </button >
-          <p>{postSummary?.textParagraph}</p>
+          {showSummary ? (
+            <>
+              {/* "Habere Geri Dön" butonu */}
+              <button
+                style={{ position: 'absolute', top: 10, right: 15 }}
+                className="buttons"
+                onClick={handleGoBackClick}
+              >
+                Habere Geri Dön
+              </button>
+              {/* Sadece başlık olarak özet */}
+              <h3 className="text-lg font-bold mb-2">{SummarizedTitle}</h3>
+            </>
+          ) : (
+            <>
+              {/* "Özetle" butonu */}
+              <button
+                style={{ position: 'absolute', top: 10, right: 15 }}
+                className="buttons"
+                onClick={handleSummarizeClick}
+              >
+                Özetle
+              </button>
+              {/* Normal postu göster */}
+              <p>{postSummary?.textParagraph}</p>
+            </>
+          )}
           <div className="flex justify-around mt-4">
-            <div className="flex items-center w-5/6 ">
+            <div className="flex items-center w-5/6">
               <CommentBox postId={postId} userId={userId} onCommentAdd={(newComment) => setLoadedComments([...loadedComments, newComment])} />
             </div>
           </div>
           <div className="mt-2">
-           {loadedComments.length > 0 && (
-             <>
-               <h3 className="text-lg font-bold mb-2">Yorumlar</h3>
-               <ul>
-                 {loadedComments.slice(0).reverse().map((comment) => (
-                   <li key={comment?.id} className="mb-2">
-                     <strong>{comment?.firstName} {comment?.lastName}</strong>: {comment?.content}
-                   </li>
-                 ))}
-               </ul>
-             </>
-           )}
-
+            {loadedComments.length > 0 && (
+              <>
+                <h3 className="text-lg font-bold mb-2">Yorumlar</h3>
+                <ul>
+                  {loadedComments.slice(0).reverse().map((comment) => (
+                    <li key={comment?.id} className="mb-2">
+                      <strong>{comment?.firstName} {comment?.lastName}</strong>: {comment?.content}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </>
       )}

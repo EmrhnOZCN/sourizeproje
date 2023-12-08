@@ -31,12 +31,12 @@ public class WebScraperController {
     @GetMapping("/scrape")
     public void scrapeWebsite() {
 
-        String url = "https://www.haberler.com/guncel/";
-        webScraperService.scrapeWebsite(url);
+
     }
 
     @GetMapping("/getTopics")
     public ResponseEntity<List<TopicDto>> getTopics() {
+
         LocalDateTime today = LocalDateTime.now();
         List<TopicEntity> topics = webScraperService.getTopicsByDate(today);
         List<TopicDto> topicDtos = topics.stream()
@@ -47,6 +47,7 @@ public class WebScraperController {
 
     @GetMapping("/getPosts")
     public ResponseEntity<List<PostsDto>> getPosts() {
+
         List<PostEntity> posts = webScraperService.getPosts();
         List<PostsDto> postDtos = posts.stream()
                 .map(PostsDto::fromEntity)
