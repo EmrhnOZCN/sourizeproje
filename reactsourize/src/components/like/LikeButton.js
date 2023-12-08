@@ -11,6 +11,8 @@ function LikeButton({ postId, onLikeCountChange, initialLikeCount, initialIsLike
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
+      console.log(postId)
+      console.log(userId)
         const response = await axios.get(`http://localhost:8080/api/likes/check`, {
           params: {
             postId: postId,
@@ -56,10 +58,10 @@ function LikeButton({ postId, onLikeCountChange, initialLikeCount, initialIsLike
   };
 
   return (
-    <button className={`mr-2 text-blue-500 ${isLiked ? 'text-red-500' : ''}`} onClick={handleLikeClick}>
-      <img src={isLiked ? unlikeIcon : likeIcon} alt={isLiked ? 'Unlike' : 'Like'} style={{ width: '30px', height: '30px', marginRight: '5px' }} />
-    </button>
-  );
-}
+      <button className={`mr-2 text-blue-500 ${isLiked ? 'text-red-500' : ''}`} onClick={handleLikeClick}>
+        <img src={isLiked ? likeIcon : unlikeIcon} alt={isLiked ? 'Unlike' : 'Like'} style={{ width: '30px', height: '30px', marginRight: '5px' }} />
+      </button>
+    );
+  }
 
 export default LikeButton;

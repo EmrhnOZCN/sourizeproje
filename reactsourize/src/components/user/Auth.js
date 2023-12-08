@@ -45,11 +45,12 @@ const Auth = ({ onClose, onLoginSuccess }) => {
         localStorage.setItem('firstName', loginData.firstName);
         localStorage.setItem('lastName', loginData.lastName);
 
+
         alert(`Başarıyla giriş yaptınız. Hoş geldiniz, ${loginData.firstName + loginData.lastName }!`);
         onClose();
 
         // Anasayfaya yönlendirme
-       navigate(`/${loginData.userId}`);
+        navigate(`/role/user/${loginData.userId}/`);
       } else {
         // Giriş başarısız
         throw new Error('Failed to log in. Please try again.');

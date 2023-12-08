@@ -9,6 +9,7 @@
     import Summaries from '../summaries/summaries';
     import { useNavigate } from 'react-router-dom';
     import logo from '../img/SOUR.png';
+    import userIcon from '../img/user.png';
 
     // App elementini belirle
     Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -64,6 +65,12 @@
 
       const handleLoginModalClose = () => {
         setIsLoginModalOpen(false);
+      };
+      const handleLogoClick = (e) => {
+        e.preventDefault(); // Prevent the default navigation behavior
+
+        // Reload the current page
+        window.location.reload();
       };
 
       const handlePostClick = (postId) => {
@@ -129,7 +136,7 @@
         <div>
           <body className='base-template'>
             <div className='header-template sticky'>
-              <a className='header-logo-template xs:w-1/4 sm:w-2/12 lg:w-1/12' href='#'>
+              <a className='header-logo-template xs:w-1/4 sm:w-2/12 lg:w-1/12' href='#' onClick={handleLogoClick}>
                 <div>
                   <img src={logo} className=''></img>
                 </div>
@@ -140,7 +147,7 @@
               {isLoggedIn ? (
                 <>
                   <div id='buttonsloggedin' className=' xs:w-1/4 sm:w-4/12 lg:w-2/12'>
-                    
+
                     {/* Logout button */}
                     <button className='buttons xs:w-1/2' onClick={handleLogout}>
                       Çıkış Yap

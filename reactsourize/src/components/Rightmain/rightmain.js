@@ -29,24 +29,26 @@ function Rightmain({ userId,onSelectPost }) {
 
       fetchData();
     }, []);
-      return (
-        <div className='bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm'>
-          <h2 className='text-center bg-green-500 text-gray-50 text-md font-medium rounded-t-md'>Popüler Gündemler</h2>
-          <ul className=''>
+     return (
+         <div className='bg-[#f8f8f8] rounded-md shadow-gray-500 shadow-sm'>
+           <h2 className='text-center bg-green-500 text-gray-50 text-md font-medium rounded-t-md'>Popüler Gündemler</h2>
+           <ul>
              {topics.map((topic) => (
-                      <li key={topic.id}
-                      onClick={() => handlePostClick(topic.id)} className='border-b-2 pt-2 pr-2 pl-2 border-gray-400 text-sm font-normal font-sans cursor-pointer'>
-                        <strong>{topic.title}</strong>
-                        <p className='text-2xs font-mono'>Updated Time: {topic.updatedTime}</p>
-                      </li>
-                    ))}
-          </ul>
-          <div className=' mt-2  p-2'>
-              <p className='text-2xs text-gray-500'>En çok tercih edilen Gündemler</p>
-          </div>
-        </div>
-
-      );
-}
+               <li
+                 key={topic.postId} // Use postId instead of id
+                 onClick={() => handlePostClick(topic.postId)} // Use topic.postId instead of topic.id
+                 className='border-b-2 pt-2 pr-2 pl-2 border-gray-400 text-sm font-normal font-sans cursor-pointer'
+               >
+                 <strong>{topic.topicTitle}</strong> {/* Use topicTitle instead of title */}
+                 <p className='text-2xs font-mono'>Updated Time: {topic.likeDate}</p> {/* Use likeDate instead of updatedTime */}
+               </li>
+             ))}
+           </ul>
+           <div className='mt-2 p-2'>
+             <p className='text-2xs text-gray-500'>En çok tercih edilen Gündemler</p>
+           </div>
+         </div>
+       );
+     }
 
 export default Rightmain;

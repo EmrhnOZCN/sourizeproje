@@ -44,6 +44,12 @@ console.log(localStorage)
         if (isUserLoggedIn) {
 
           onSelectPost(postId);
+
+           const userId = localStorage.getItem('userId');
+           const role = localStorage.getItem('role');
+           const url = `/role/${role.toLowerCase()}/${userId}/${postId}`
+
+               navigate(url);
         } else {
           // Kullanıcı giriş yapmamışsa alert göster
           alert('Giriş yapmalısınız!');

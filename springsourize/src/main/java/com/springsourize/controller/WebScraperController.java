@@ -1,6 +1,7 @@
 package com.springsourize.controller;
 
 
+import com.springsourize.dto.PopularPostResultDTO;
 import com.springsourize.dto.PostsDto;
 import com.springsourize.dto.TopicDto;
 import com.springsourize.model.PostEntity;
@@ -54,15 +55,8 @@ public class WebScraperController {
     }
 
     @GetMapping("/getBestTopics")
-    public ResponseEntity<List<TopicDto>> getBestTopics(){
-
-        List<TopicEntity> bessTopics = webScraperService.getBestTopics();
-
-        List<TopicDto> bestTopicDtos = bessTopics.stream()
-                .map(TopicDto::fromEntity)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(bestTopicDtos);
-
+    public ResponseEntity<List<PopularPostResultDTO>> getPopularPostsLast24Hours() {
+        return ResponseEntity.ok(webScraperService.getPopularPostsFromProcedure());
     }
 
     @GetMapping("/getPosts/{postId}")
@@ -77,6 +71,7 @@ public class WebScraperController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 

@@ -20,4 +20,8 @@ public class LikeEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @Column(name = "like_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date likeDate;
 }

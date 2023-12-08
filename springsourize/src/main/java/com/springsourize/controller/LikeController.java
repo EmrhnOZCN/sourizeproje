@@ -1,11 +1,13 @@
 package com.springsourize.controller;
 
 
+import com.springsourize.dto.PopularPostResultDTO;
 import com.springsourize.service.LikeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,7 +24,8 @@ public class LikeController {
     @PostMapping("/like")
     public ResponseEntity<String> likePost(
             @RequestParam Long postId,
-            @RequestParam Long userId) {
+            @RequestParam Long userId
+            ) {
         likeService.likePost(postId, userId);
         return ResponseEntity.ok("Post liked successfully");
     }
@@ -43,6 +46,8 @@ public class LikeController {
         Map<String, Boolean> response = Collections.singletonMap("isLiked", isLiked);
         return ResponseEntity.ok(response);
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.springsourize.service;
 
+import com.springsourize.dto.PopularPostResultDTO;
 import com.springsourize.exception.CustomException;
 import com.springsourize.model.LikeEntity;
 import com.springsourize.model.PostEntity;
@@ -12,8 +13,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-
+import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.io.IOException;
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,10 +32,12 @@ public class WebScraperService {
 
     private final LikeRepository likeRepository;
 
-    public WebScraperService(TopicRepository topicRepository, PostRepository postRepository, LikeRepository likeRepository) {
+    private final DataSource dataSource;
+    public WebScraperService(TopicRepository topicRepository, PostRepository postRepository, LikeRepository likeRepository, DataSource dataSource) {
         this.topicRepository = topicRepository;
         this.postRepository = postRepository;
         this.likeRepository = likeRepository;
+        this.dataSource = dataSource;
     }
 
     public void scrapeWebsite(String url) {
@@ -143,5 +150,24 @@ public class WebScraperService {
     public Optional<PostEntity> getPostById(Long postId) {
         return postRepository.findById(postId);
     }
+
+
+    public List<PopularPostResultDTO> getPopularPostsFromProcedure() {
+        List<PopularPostResultDTO> result = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            try (CallableStatement statement = connection.prepareCall("{call get_most_liked_posts_in_last_24_hours()}")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        result.add(PopularPostResultDTO.fromResultSet(resultSet));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Handle exception
+        }
+        return result;
+    }
+
+
 
 }
