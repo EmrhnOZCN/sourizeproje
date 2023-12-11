@@ -71,8 +71,14 @@
       const handleLogoClick = (e) => {
         e.preventDefault(); // Prevent the default navigation behavior
 
+            if (isLoggedIn) {
+             navigate(`/${role}/kullanici#${userId}/`);
+           }
+           else{
+           navigate(`/`);
+           }
         // Reload the current page
-        navigate(`/${role}/kullanici#${userId}/`);
+
         window.location.reload();
       };
 
@@ -113,9 +119,14 @@
         localStorage.removeItem('userName');
         localStorage.removeItem('firstName');
         localStorage.removeItem('userId');
+        localStorage.removeItem('role');
+        localStorage.removeItem('selectPostId');
+        localStorage.removeItem('postId');
+        localStorage.removeItem('userId');
 
         // Use the navigate function to redirect to the homepage
         navigate('/');
+        window.location.reload();
       };
 
       const handleSubSelectionModalOpen = () => {

@@ -52,7 +52,7 @@ const Auth = ({ onClose, onLoginSuccess }) => {
         onClose();
 
         // Anasayfaya yönlendirme
-        navigate(`/${loginData.role}/user#${loginData.userId}/`);
+        navigate(`/${loginData.role}/kullanici#${loginData.userId}/`);
       } else {
         // Giriş başarısız
         throw new Error('Failed to log in. Please try again.');

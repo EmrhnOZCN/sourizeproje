@@ -20,7 +20,7 @@ public class PostEntity {
     @JsonIgnore
     private String textParagraph;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "topic_id")
     private TopicEntity topic;
 

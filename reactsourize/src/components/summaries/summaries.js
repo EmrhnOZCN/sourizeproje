@@ -28,6 +28,7 @@ function Summaries({ postId }) {
   useEffect(() => {
     const fetchPostSummary = async () => {
       try {
+          const postId = localStorage.getItem('postId');
         const response = await axios.get(`http://localhost:8080/api/getPosts/${postId}`);
         setPostSummary(response.data);
       } catch (error) {
@@ -67,6 +68,8 @@ function Summaries({ postId }) {
 
     const fetchComments = async () => {
       try {
+
+        const postId = localStorage.getItem('postId');
         const commentsResponse = await axios.get(`http://localhost:8080/api/comments/post/${postId}`);
         setComments(commentsResponse.data.comments);
         setLoadedComments(commentsResponse.data.comments);

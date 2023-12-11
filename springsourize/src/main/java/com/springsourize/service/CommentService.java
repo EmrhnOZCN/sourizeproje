@@ -47,6 +47,8 @@ public class CommentService {
     }
 
     public PostCommentsDto getCommentsByPostId(Long postId) {
+        System.out.println("burda");
+        System.out.println(postId);
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 

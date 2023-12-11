@@ -45,15 +45,17 @@ public class WebScraperService {
             Document document = Jsoup.connect(url).get();
 
             // ".hbBoxText p" sınıfına sahip olan <p> etiketlerini seç
-            Elements paragraphs = document.select(".hbBoxText").select("p");
+            Elements paragraphs = document.select(".gs-c-promo-heading__title").select("h3");
 
             // ".hbBoxMainText a" sınıfına sahip olan <a> etiketlerini seç
-            Elements links = document.select(".hbBoxMainText").select("a");
+            Elements links = document.select(".gs-c-promo-heading").select("a");
+
+
+
 
             // <p> etiketleri için ayrı bir liste
             List<String> paragraphList = new ArrayList<>();
             for (Element paragraph : paragraphs) {
-
                 paragraphList.add(paragraph.text());
             }
 
@@ -63,10 +65,18 @@ public class WebScraperService {
 
             for (Element link : links) {
 
+                String href = link.attr("href");
+
+                // Başında "https" yoksa veya link boşsa atla
+                if (href.startsWith("https")) {
+                    continue;
+                }
 
 
-                linkList.add(link.attr("href"));
-                Document documentLink = Jsoup.connect("http://www.haberler.com"+link.attr("href")).get();
+
+                linkList.add(href);
+
+                Document documentLink = Jsoup.connect("http://www.bbc.com"+link.attr("href")).get();
                 Elements icerikAlaniDiv = documentLink.select("p");
 
 
@@ -85,6 +95,10 @@ public class WebScraperService {
 
             }
             List<TopicEntity> topicsToSave = new ArrayList<>();
+            System.out.println(paragraphList.size());
+            System.out.println(linkList.size());
+            System.out.println(linkParagraphList.size()
+            );
             // Her iki listeyi aynı anda kullanarak TopicEntity'yi oluştur ve kaydet
             for (int i = 0; i < Math.min(paragraphList.size(), linkList.size()); i++) {
                 TopicEntity topicEntity = new TopicEntity();
@@ -102,7 +116,10 @@ public class WebScraperService {
                 try {
                     topicRepository.save(topicEntity);
                 } catch (Exception e) {
-                    throw new CustomException("Bu konu zaten ekli!");
+                    // Bu konu zaten ekli hatasını sadece o konu üzerinde tespit et ve ekrana bas
+                    System.err.println("Bu konu zaten ekli! Konu Linki: " + linkList.get(i));
+                    // Döngüyü devam ettir
+                    continue;
                 }
 
             }
@@ -166,6 +183,13 @@ public class WebScraperService {
             // Handle exception
         }
         return result;
+    }
+    public List<TopicEntity> getLatestTopics(int count) {
+        return topicRepository.getLatestTopics(count);
+    }
+
+    public TopicEntity findTopByOrderByUpdatedTimeDesc(){
+        return topicRepository.findFirstByOrderByUpdatedTimeDesc();
     }
 
 

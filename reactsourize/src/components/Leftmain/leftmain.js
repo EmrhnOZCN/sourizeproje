@@ -12,7 +12,7 @@
       const itemsPerPage = 10;
       const navigate = useNavigate();
       const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-console.log(localStorage)
+
       useEffect(() => {
         const fetchData = async () => {
           try {
@@ -42,15 +42,17 @@ console.log(localStorage)
         const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
         if (isUserLoggedIn) {
+           // postId'yi localStorage'e ekle
+           localStorage.setItem('postId', postId);
 
-          onSelectPost(postId);
+           onSelectPost(postId);
 
            const userId = localStorage.getItem('userId');
            const role = localStorage.getItem('role');
-           const url = `/${role}/kullanici#${userId}/post/${postId}`
+           const url = `/${role}/kullanici#${userId}/post/${postId}`;
 
-               navigate(url);
-        } else {
+           navigate(url);
+         } else {
           // Kullanıcı giriş yapmamışsa alert göster
           alert('Giriş yapmalısınız!');
         }

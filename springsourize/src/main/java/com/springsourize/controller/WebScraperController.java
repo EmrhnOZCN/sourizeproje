@@ -30,22 +30,23 @@ public class WebScraperController {
 
     @GetMapping("/scrape")
     public void scrapeWebsite() {
-        String url = "https://www.haberler.com/guncel/";
+        String url = "http://www.bbc.com/news";
         webScraperService.scrapeWebsite(url);
 
     }
 
     @GetMapping("/getTopics")
     public ResponseEntity<List<TopicDto>> getTopics() {
+        // PostgreSQL saklı işlemi çağrısı ile en son konuları al
+        List<TopicEntity> latestTopics = webScraperService.getLatestTopics(30);
 
-        LocalDateTime today = LocalDateTime.now();
-        List<TopicEntity> topics = webScraperService.getTopicsByDate(today);
-        List<TopicDto> topicDtos = topics.stream()
+        // Dönüşüm işlemleri
+        List<TopicDto> topicDtos = latestTopics.stream()
                 .map(TopicDto::fromEntity)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(topicDtos);
     }
-
     @GetMapping("/getPosts")
     public ResponseEntity<List<PostsDto>> getPosts() {
 

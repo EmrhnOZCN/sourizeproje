@@ -19,4 +19,8 @@ public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
     List<TopicEntity> findByUpdatedTimeBetween(@Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
 
+    @Query("SELECT t FROM TopicEntity t ORDER BY t.updatedTime  LIMIT :count")
+    List<TopicEntity> getLatestTopics(int count);
+
+    TopicEntity findTopByOrderByUpdatedTimeDesc();
 }
