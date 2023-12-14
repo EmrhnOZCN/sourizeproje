@@ -13,6 +13,7 @@ public class AuthResponse {
     Long userId;
 
     String role;
+    boolean isEnabled;
 
 
 }

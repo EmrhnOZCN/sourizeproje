@@ -52,40 +52,18 @@ public class PublicController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginUserRequest loginUserRequest) {
         try {
-            System.out.println("burda");
-            String url = "http://www.bbc.com";
-            TopicEntity latestTopic = webScraperService.findTopByOrderByUpdatedTimeDesc();
-            System.out.println("findTopByOrderByUpdatedTimeDesc() çalıştı. Sonuç: " + latestTopic);
 
-
-            // Eğer en son kaydedilen konu son 6 saat içinde güncellendiyse tekrar scrape işlemi yapma
-
-            if (latestTopic != null) {
-                LocalDateTime latestTopicTime = latestTopic.getUpdatedTime();
-                LocalDateTime now = LocalDateTime.now();
-
-                // En son post'un kayıt tarihi ile şu andaki zaman arasındaki farkı kontrol et
-                long hoursSinceLastPost = java.time.Duration.between(latestTopicTime, now).toHours();
-
-                System.out.println(hoursSinceLastPost);
-                // Eğer 6 saatten fazla bir süre geçtiyse işlemi yap
-                if (hoursSinceLastPost > 6) {
-                    // İşlemlerinizi burada gerçekleştirin
-                    // Örneğin, en son post'u sistemden çıkarabilirsiniz
-                    System.out.println("burda1");
-                    webScraperService.scrapeWebsite(url);
-                }
-            }
-            else {
-                webScraperService.scrapeWebsite(url);
-
-                System.err.println("latestTopic null. İşlem yapılamıyor.");
-            }
 
 
             UserEntity user = userService.loginUser(loginUserRequest);
 
             AuthResponse authResponse = new AuthResponse();
+
+            System.out.println(user.isEnabled());
+            if (!user.isEnabled()) {
+                // Hesap kilitli ise Unauthorized (401) döndür
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account is locked");
+            }
 
             authResponse.setUserId(user.getId());
             authResponse.setFirstName(user.getFirstName());

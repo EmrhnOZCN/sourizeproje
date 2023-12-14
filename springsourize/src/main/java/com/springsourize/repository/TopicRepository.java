@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
 
@@ -19,8 +20,11 @@ public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
     List<TopicEntity> findByUpdatedTimeBetween(@Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT t FROM TopicEntity t ORDER BY t.updatedTime  LIMIT :count")
-    List<TopicEntity> getLatestTopics(int count);
 
+    List<TopicEntity> findTop30ByOrderByUpdatedTimeDesc();
     TopicEntity findTopByOrderByUpdatedTimeDesc();
+
+    Optional<TopicEntity> findByLink(String link);
+
+    Optional<TopicEntity> findByTitle(String s);
 }

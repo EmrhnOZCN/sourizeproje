@@ -1,6 +1,7 @@
 package com.springsourize.service;
 
 import com.springsourize.dto.PopularPostResultDTO;
+import com.springsourize.dto.TopicDto;
 import com.springsourize.exception.CustomException;
 import com.springsourize.model.LikeEntity;
 import com.springsourize.model.PostEntity;
@@ -45,7 +46,7 @@ public class WebScraperService {
             Document document = Jsoup.connect(url).get();
 
             // ".hbBoxText p" sınıfına sahip olan <p> etiketlerini seç
-            Elements paragraphs = document.select(".gs-c-promo-heading__title").select("h3");
+            Elements paragraphs = document.select(".nw-o-link-split__text").select("h3");
 
             // ".hbBoxMainText a" sınıfına sahip olan <a> etiketlerini seç
             Elements links = document.select(".gs-c-promo-heading").select("a");
@@ -95,43 +96,47 @@ public class WebScraperService {
 
             }
             List<TopicEntity> topicsToSave = new ArrayList<>();
-            System.out.println(paragraphList.size());
-            System.out.println(linkList.size());
-            System.out.println(linkParagraphList.size()
-            );
+
             // Her iki listeyi aynı anda kullanarak TopicEntity'yi oluştur ve kaydet
             for (int i = 0; i < Math.min(paragraphList.size(), linkList.size()); i++) {
                 TopicEntity topicEntity = new TopicEntity();
                 topicEntity.setTitle(paragraphList.get(i));
                 topicEntity.setLink(linkList.get(i));
                 topicEntity.setUpdatedTime(LocalDateTime.now());
-                PostEntity postEntity = new PostEntity();
-                postEntity.setTextParagraph(linkParagraphList.get(i));
-                postEntity.setCreatedAt(LocalDateTime.now());
-                postEntity.setTopic(topicEntity);
-
-                topicEntity.setPosts(Collections.singletonList(postEntity));
-
 
                 try {
-                    topicRepository.save(topicEntity);
+                    // Veritabanında bu başlıkla ilişkili bir konu var mı kontrol et
+                    Optional<TopicEntity> existingTopic = topicRepository.findByTitle(paragraphList.get(i));
+                    if (existingTopic.isPresent()) {
+                        // Eğer varsa, var olan konuya yeni bir post ekle
+                        PostEntity postEntity = new PostEntity();
+                        postEntity.setTextParagraph(linkParagraphList.get(i));
+                        postEntity.setCreatedAt(LocalDateTime.now());
+                        postEntity.setTopic(existingTopic.get());
+                        existingTopic.get().getPosts().add(postEntity);
+
+                        topicRepository.save(existingTopic.get());
+                    } else {
+                        // Eğer yoksa, yeni bir konu oluştur ve kaydet
+                        PostEntity postEntity = new PostEntity();
+                        postEntity.setTextParagraph(linkParagraphList.get(i));
+                        postEntity.setCreatedAt(LocalDateTime.now());
+                        postEntity.setTopic(topicEntity);
+                        topicEntity.setPosts(Collections.singletonList(postEntity));
+
+                        topicRepository.save(topicEntity);
+                    }
                 } catch (Exception e) {
-                    // Bu konu zaten ekli hatasını sadece o konu üzerinde tespit et ve ekrana bas
-                    System.err.println("Bu konu zaten ekli! Konu Linki: " + linkList.get(i));
-                    // Döngüyü devam ettir
-                    continue;
+                    // Hata durumunda uygun şekilde işlem yapın
+                    e.printStackTrace();
                 }
 
+
             }
-
-
-
-
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
 
 
     public List<TopicEntity> getTopicsByDate(LocalDateTime date) {
@@ -184,8 +189,9 @@ public class WebScraperService {
         }
         return result;
     }
-    public List<TopicEntity> getLatestTopics(int count) {
-        return topicRepository.getLatestTopics(count);
+    public List<TopicEntity> findLast30Topics() {
+
+        return topicRepository.findTop30ByOrderByUpdatedTimeDesc();
     }
 
     public TopicEntity findTopByOrderByUpdatedTimeDesc(){

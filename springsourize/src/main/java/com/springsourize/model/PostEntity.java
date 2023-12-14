@@ -33,7 +33,7 @@ public class PostEntity {
     private LocalDateTime createdAt;
 
     // Sadece bu satırı tutun
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private SummariesEntity summary;
 
     @Override

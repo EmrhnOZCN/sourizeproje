@@ -42,11 +42,18 @@ public class UserEntity  {
 
 
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity  rolesEntity;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private Set<CommentEntity> comments;
 
+
+
+    public void removeComment(CommentEntity comment) {
+        comments.remove(comment);
+    }
 
 
 }

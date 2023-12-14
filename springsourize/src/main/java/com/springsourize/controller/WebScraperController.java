@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,13 +39,13 @@ public class WebScraperController {
     @GetMapping("/getTopics")
     public ResponseEntity<List<TopicDto>> getTopics() {
         // PostgreSQL saklı işlemi çağrısı ile en son konuları al
-        List<TopicEntity> latestTopics = webScraperService.getLatestTopics(30);
+        List<TopicEntity> latestTopics = webScraperService.findLast30Topics();
 
         // Dönüşüm işlemleri
         List<TopicDto> topicDtos = latestTopics.stream()
                 .map(TopicDto::fromEntity)
                 .collect(Collectors.toList());
-
+        Collections.reverse(topicDtos);
         return ResponseEntity.ok(topicDtos);
     }
     @GetMapping("/getPosts")

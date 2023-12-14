@@ -28,7 +28,7 @@
         const userId = localStorage.getItem('userId');
         const role = localStorage.getItem('role');
       const navigate = useNavigate();
-
+  const [isDestekFormuOpen, setIsDestekFormuOpen] = useState(false);
       // handleLoginSuccess fonksiyonunu useEffect kapsamı dışında tanımla
      const handleLoginSuccess = async (loginData) => {
          if (loginData.success) {
@@ -110,6 +110,8 @@
         };
 
 
+
+
       const handleLogout = () => {
         setIsLoggedIn(false);
         localStorage.removeItem('isLoggedIn');
@@ -175,15 +177,17 @@
                 <>
                   <div id='buttonsloggedin' className=' xs:w-1/4 sm:w-4/12 lg:w-2/12'>
                    {role === 'ROLE_USER' && (
-                          <button className='buttons xs:w-1/2' onClick={handlePremiumButtonClick}>
+                          <button className='buttons xs:w-1/3' onClick={handlePremiumButtonClick}>
                             Premium
                           </button>
                         )}
 
+
                     {/* Logout button */}
-                    <button className='buttons xs:w-1/2' onClick={handleLogout}>
+                    <button className='buttons xs:w-1/3' onClick={handleLogout}>
                       Çıkış Yap
                     </button>
+
                   </div>
                 </>
               ) : (

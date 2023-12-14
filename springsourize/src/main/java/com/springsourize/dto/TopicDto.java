@@ -1,9 +1,11 @@
 package com.springsourize.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springsourize.model.TopicEntity;
 import java.time.LocalDateTime;
 
 public record TopicDto(
+
         long id,
         String title,
         LocalDateTime updatedTime,

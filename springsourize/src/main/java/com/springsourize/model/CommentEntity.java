@@ -1,5 +1,6 @@
 package com.springsourize.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,13 +17,17 @@ public class CommentEntity {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
+    @JsonIgnore
     private PostEntity post;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private UserEntity author;
+
+
 
     private Date createdAt;
 }
