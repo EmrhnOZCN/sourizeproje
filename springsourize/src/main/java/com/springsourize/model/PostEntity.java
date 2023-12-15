@@ -35,7 +35,9 @@ public class PostEntity {
     // Sadece bu satırı tutun
     @OneToOne(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private SummariesEntity summary;
-
+    public void setTextParagraphs(List<String> paragraphs) {
+        this.textParagraph = String.join(" ", paragraphs);
+    }
     @Override
     public String toString() {
         return "PostEntity{" +
