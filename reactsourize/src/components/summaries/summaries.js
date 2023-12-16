@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import LikeButton from '../like/LikeButton';
 import CommentBox from '../comment/CommentBox';
+import Summary from './summary';
 
 const override = css`
   display: block;
@@ -13,6 +14,7 @@ const override = css`
 
 function Summaries({ postId }) {
   const [postSummary, setPostSummary] = useState(null);
+  const [summaryPost, setSummaryPost] = useState();
   const [loading, setLoading] = useState(true);
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState([]);
@@ -31,12 +33,14 @@ function Summaries({ postId }) {
           const postId = localStorage.getItem('postId');
         const response = await axios.get(`http://localhost:8080/api/getPosts/${postId}`);
         setPostSummary(response.data);
+        setShowSummary(false);
       } catch (error) {
         console.error('Error fetching post summary:', error);
       } finally {
         setLoading(false);
       }
-    };
+   };
+
 
     const fetchPostDetails = async () => {
       try {
@@ -71,6 +75,7 @@ function Summaries({ postId }) {
 
         const postId = localStorage.getItem('postId');
         const commentsResponse = await axios.get(`http://localhost:8080/api/comments/post/${postId}`);
+
         setComments(commentsResponse.data.comments);
         setLoadedComments(commentsResponse.data.comments);
       } catch (error) {
@@ -88,10 +93,26 @@ function Summaries({ postId }) {
   }, [postId, userId]);
 
   const handleSummarizeClick = async () => {
-    // Burada sadece başlık olarak özetleme yapılır, ayrı bir API çağrısı yapılmasına gerek yok
-    setSummarizedTitle('Özet ');
-    setShowSummary(true);
+    try {
+      const response = await axios.get(`http://localhost:8080/public/summary/${postId}`);
+
+      // Veriyi doğru bir şekilde alıp set et
+      const summaryData = response.data[0];
+      setSummaryPost(summaryData.summary_text);
+
+
+      setShowSummary(true);
+    } catch (error) {
+      console.error('Error fetching post summary:', error);
+    }
   };
+
+
+    useEffect(() => {
+      console.log('Summary Post:', summaryPost);
+      console.log('Summarized Title:', SummarizedTitle);
+    }, [summaryPost, SummarizedTitle]);
+
 
   const handleGoBackClick = () => {
     setShowSummary(false);
@@ -117,6 +138,7 @@ function Summaries({ postId }) {
           </h2>
           {showSummary ? (
             <>
+             <Summary/>
               {/* "Habere Geri Dön" butonu */}
               <button
                 style={{ position: 'absolute', top: 10, right: 15 }}
@@ -131,15 +153,20 @@ function Summaries({ postId }) {
           ) : (
             <>
               {/* "Özetle" butonu */}
+
+
               <button
                 style={{ position: 'absolute', top: 10, right: 15 }}
                 className="buttons"
                 onClick={handleSummarizeClick}
               >
                 Özetle
+
               </button>
               {/* Normal postu göster */}
               <p>{postSummary?.textParagraph}</p>
+
+
             </>
           )}
           <div className="flex justify-around mt-4">
@@ -150,13 +177,23 @@ function Summaries({ postId }) {
           <div className="mt-2">
             {loadedComments.length > 0 && (
               <>
-                <h3 className="text-lg font-bold mb-2">Yorumlar</h3>
+                <div className='text-center pt-5'>
+                  <h3 className="text-xl font-bold mb-2 text-center font-normal">Yorumlar</h3>
+                </div>
                 <ul>
-                  {loadedComments.slice(0).reverse().map((comment) => (
-                    <li key={comment?.id} className="mb-2">
-                      <strong>{comment?.firstName} {comment?.lastName}</strong>: {comment?.content}
-                    </li>
-                  ))}
+                  <div className=' rounded-md '>
+                    {loadedComments.slice(0).reverse().map((comment) => (
+                      <li key={comment?.id} className='pt-4 '>
+                        <div className='rounded-md bg-gray-50 pt-4 shadow-md'>
+                          <p className=' text-lg font-bold mb-2 font-normal'>&nbsp;{comment?.firstName}&nbsp;
+                          {comment?.lastName}</p> 
+                          <p className='ml-2 text-gray-500  font-sans text-sm pb-2'>
+                          {comment?.content}
+                          </p>
+                        </div>  
+                      </li>
+                    ))}
+                  </div>
                 </ul>
               </>
             )}

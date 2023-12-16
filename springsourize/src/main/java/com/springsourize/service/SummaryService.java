@@ -21,7 +21,7 @@ import java.net.http.HttpRequest;  // Eklenmiş import bildirimi
 import java.net.http.HttpResponse;
 @Service
 public class SummaryService {
-    private static final String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/knkarthick/MEETING_SUMMARY";
+    private static final String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/tuner007/pegasus_summarizer";
     private static final String HUGGINGFACE_API_KEY = "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";
 
     private final SummariesRepository summariesRepository;
