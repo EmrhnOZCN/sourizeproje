@@ -32,12 +32,26 @@ public class PostEntity {
 
     private LocalDateTime createdAt;
 
-    // Sadece bu satırı tutun
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SummariesEntity summary;
+
     public void setTextParagraphs(List<String> paragraphs) {
         this.textParagraph = String.join(" ", paragraphs);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostEntity that = (PostEntity) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
+
     @Override
     public String toString() {
         return "PostEntity{" +

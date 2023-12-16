@@ -31,6 +31,8 @@ function LikeButton({ postId, onLikeCountChange, initialLikeCount, initialIsLike
   const handleLikeClick = async () => {
     try {
       if (isLiked) {
+      console.log(userId);
+      console.log(postId);
         await axios.delete(`http://localhost:8080/api/likes/unlike`, {
           params: {
             postId: postId,
