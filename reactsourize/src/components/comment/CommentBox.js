@@ -37,6 +37,7 @@ function CommentBox({ postId, onCommentAdd }) {
         onCommentAdd(response.data.newComment);
         setNewComment('');
         toast.success('Yorum başarıyla eklendi.');
+        window.location.reload();
       } else {
         toast.error('Yorum eklenirken bir hata oluştu.');
       }
