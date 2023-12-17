@@ -17,6 +17,8 @@ public class SummaryController {
 
     private final SummaryService summaryService;
 
+
+
     public SummaryController( SummaryService summaryService) {
 
         this.summaryService = summaryService;
@@ -24,6 +26,8 @@ public class SummaryController {
 
     @GetMapping("/summary/{postId}")
     public String getSummary(@PathVariable Long postId)  {
+
+
         return summaryService.querydata(postId);
     }
 

@@ -15,10 +15,12 @@ public class TopicEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(columnDefinition = "TEXT")
     private String title;
 
     private LocalDateTime updatedTime;
 
+    @Column(columnDefinition = "TEXT")
     private String link;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

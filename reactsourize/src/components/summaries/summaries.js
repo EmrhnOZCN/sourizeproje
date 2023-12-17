@@ -94,6 +94,13 @@ function Summaries({ postId }) {
 
   const handleSummarizeClick = async () => {
     try {
+
+
+        const userId = localStorage.getItem('userId');
+          const postId = localStorage.getItem('postId');
+
+      await axios.post(`http://localhost:8080/public/summaryClick/click?userId=${userId}&postId=${postId}`);
+
       const response = await axios.get(`http://localhost:8080/public/summary/${postId}`);
 
       // Veriyi doğru bir şekilde alıp set et
@@ -171,7 +178,15 @@ function Summaries({ postId }) {
           )}
           <div className="flex justify-around mt-4">
             <div className="flex items-center w-5/6">
-              <CommentBox postId={postId} userId={userId} onCommentAdd={(newComment) => setLoadedComments([...loadedComments, newComment])} />
+              <CommentBox
+                postId={postId}
+                userId={userId}
+                onCommentAdd={(newComment) => {
+                  // Yeni yorumu mevcut yorum listesine ekleyerek state'i güncelliyoruz
+                  setLoadedComments((prevComments) => [...prevComments, newComment]);
+                }}
+              />
+
             </div>
           </div>
           <div className="mt-2">
