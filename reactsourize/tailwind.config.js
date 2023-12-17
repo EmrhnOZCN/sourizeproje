@@ -26,10 +26,12 @@ module.exports = {
           'cinnemon':'#7b3f00',
           'koyu-reddit-grisi':'#b0a8a0',
           'header-bg':'#fcfefbff',
+          'adminmenu':'#1c2434',
         },
         height: {
           custom_for_scrollbar:'480px',
           px107_for_logo:'107px',
+          '1/12': '8.333333%',
         },
         width: {
           px310_for_logo:'310px',

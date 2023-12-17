@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.leftMenu{
+    @apply   rounded-lg w-full h-1/12 border-b border-gray-600 text-gray-50 text-base font-sans font-normal text-sm 
+    text-center pl-10 justify-start flex flex-row items-center mb-4
+  }
+.menuIcons{
+    @apply flex mr-2
+}
