@@ -9,4 +9,4 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sourize
     username: postgres
-    password: 12345
+    password: 2001

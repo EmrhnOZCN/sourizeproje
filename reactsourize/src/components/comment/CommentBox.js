@@ -27,7 +27,7 @@ function CommentBox({ postId, onCommentAdd }) {
         return;
       }
 
-      const response = await axios.post(`http://localhost:8080/api/comments/add`, {
+      const response = await axios.post('http://localhost:8080/api/comments/add', {
         postId: postId,
         userId: userId,
         content: newComment,
