@@ -1,11 +1,18 @@
-// AdminPanel.js
 
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLeftMenu from './AdminLeftMenu';
+import AdminBase from './AdminBase';
+import UserPanel from './UserPanel';
+import GundemPanel from './GundemPanel'; // Import other panels as needed
+import YorumPanel from './YorumPanel';
+import HaberPanel from './HaberPanel';
+import OzetPanel from './OzetPanel';
+import SupportPanel from './SupportPanel';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const [activePanel, setActivePanel] = useState('adminBase');
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -14,14 +21,28 @@ const AdminPanel = () => {
       localStorage.getItem('password') === '12345';
 
     if (!isAuthenticated || !isAuthorizedUser) {
-      // Redirect to /admin if not authenticated or not authorized
       navigate('/admin');
     }
   }, [navigate]);
 
+  const handlePanelChange = (panelName) => {
+    setActivePanel(panelName);
+  };
+
   return (
-    <div className="min-h-screen flex bg-gray-200">
-      <AdminLeftMenu/>
+    <div className="min-h-screen flex bg-gray-200 justify-between">
+      {/* Pass onPanelChange prop here */}
+      <AdminLeftMenu onPanelChange={handlePanelChange} />
+      <div className='w-10/12 items-center bg-gray-200 justify-center flex'>
+        {/* Render appropriate panel based on activePanel state */}
+        {activePanel === 'adminBase' && <AdminBase />}
+        {activePanel === 'userPanel' && <UserPanel />}
+        {activePanel === 'gundemPanel' && <GundemPanel />}
+        {activePanel === 'yorumPanel' && <YorumPanel />}
+        {activePanel === 'haberPanel' && <HaberPanel />}
+        {activePanel === 'ozetPanel' && <OzetPanel />}
+        {activePanel === 'supportPanel' && <SupportPanel />}
+      </div>
     </div>
   );
 };
