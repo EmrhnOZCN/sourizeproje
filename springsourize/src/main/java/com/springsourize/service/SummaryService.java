@@ -36,7 +36,7 @@ public class SummaryService {
 
     public String querydata(Long postId)  {
         // Debug için
-        System.out.println(postId);
+
 
         PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Belirtilen ID'ye sahip post bulunamadı."));
 
@@ -115,4 +115,6 @@ public class SummaryService {
         // Bu örnekte, basit bir kontrol gerçekleştiriliyor
         return Math.random() < 0.8; // Rastgele başarı oranı
     }
+
+
 }

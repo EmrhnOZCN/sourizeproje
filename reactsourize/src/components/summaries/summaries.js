@@ -94,25 +94,31 @@ function Summaries({ postId }) {
 
   const handleSummarizeClick = async () => {
     try {
+      const userId = localStorage.getItem('userId');
+      const postId = localStorage.getItem('postId');
 
-
-        const userId = localStorage.getItem('userId');
-          const postId = localStorage.getItem('postId');
+      // "Özetle" butonuna tıklandığında yükleniyor göstergesini göster
+      setLoading(true);
 
       await axios.post(`http://localhost:8080/public/summaryClick/click?userId=${userId}&postId=${postId}`);
+
+      // Axios isteği tamamlandıktan 1 saniye sonra "showSummary" durumunu güncelle
+      setTimeout(() => {
+        setShowSummary(true);
+        setLoading(false); // Yükleniyor göstergesini kapat
+      }, 500);
 
       const response = await axios.get(`http://localhost:8080/public/summary/${postId}`);
 
       // Veriyi doğru bir şekilde alıp set et
       const summaryData = response.data[0];
       setSummaryPost(summaryData.summary_text);
-
-
-      setShowSummary(true);
     } catch (error) {
       console.error('Error fetching post summary:', error);
     }
   };
+
+
 
 
     useEffect(() => {
@@ -128,9 +134,10 @@ function Summaries({ postId }) {
   return (
     <div className="border rounded-md p-4 bg-white shadow-md" style={{ position: 'relative' }}>
       {loading ? (
-        <div className="mb-4" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <ClipLoader color="red" loading={loading} css={override} size={100} />
-        </div>
+         <div className="mb-4" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                 <ClipLoader color="red" loading={loading} css={override} size={100} />
+                 
+               </div>
       ) : (
         <>
           <div className='w-1/6'>
@@ -140,9 +147,9 @@ function Summaries({ postId }) {
               onLikeCountChange={(newLikeCount) => setLikeCount(newLikeCount)}
             />
           </div>
-          <h2 className="text-xl font-bold mb-2 text-center font-normal" >
-            Seçilen Post
-          </h2>
+<h2 className="text-xl font-bold mb-2 text-center font-normal" >
+                          Seçilen Post
+                        </h2>
           {showSummary ? (
             <>
              <Summary/>
@@ -168,6 +175,7 @@ function Summaries({ postId }) {
                 onClick={handleSummarizeClick}
               >
                 Özetle
+
 
               </button>
               {/* Normal postu göster */}

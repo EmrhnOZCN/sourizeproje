@@ -27,4 +27,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
     Optional<TopicEntity> findByLink(String link);
 
     Optional<TopicEntity> findByTitle(String s);
+
+    long countByUpdatedTimeAfter(LocalDateTime twentyFourHoursAgo);
 }

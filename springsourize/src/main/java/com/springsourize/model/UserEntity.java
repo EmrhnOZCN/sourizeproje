@@ -49,6 +49,11 @@ public class UserEntity  {
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private Set<CommentEntity> comments;
 
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+    private Set<SupportMessageEntity> sentMessages;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
+    private Set<SupportMessageEntity> receivedMessages;
 
 
     public void removeComment(CommentEntity comment) {

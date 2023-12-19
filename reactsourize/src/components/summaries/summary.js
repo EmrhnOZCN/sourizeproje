@@ -44,7 +44,9 @@ function Summary({  }) {
       // Veriyi doğru bir şekilde alıp set et
       const summaryData = response.data[0];
       setSummaryPost(summaryData.summary_text);
-
+setTimeout(() => {
+        setLoading(false);
+      }, 700);
 
       setShowSummary(true);
     } catch (error) {
@@ -62,9 +64,16 @@ function Summary({  }) {
   };
 
   return (
+  loading ? (
+            <div className="mb-4" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ClipLoader color="red" loading={loading} css={override} size={100} />
+
+                  </div>
+        ): (
     <div className="border rounded-md p-4 bg-white shadow-md" style={{ position: 'relative' }}>
+
         <p>{summaryPost}</p>
-    </div>
+    </div>)
   );
 }
 export default Summary;

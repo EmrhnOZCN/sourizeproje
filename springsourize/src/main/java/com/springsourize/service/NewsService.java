@@ -6,6 +6,7 @@ import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
 import com.springsourize.repository.PostRepository;
 import com.springsourize.repository.TopicRepository;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,6 +48,11 @@ public class NewsService {
         List<TopicEntity> topicEntities = new ArrayList<>();
 
         for (Article article : articles) {
+            // Başlık boş ise bu makaleyi atla
+            if (article.getTitle() == null || article.getTitle().trim().isEmpty()) {
+                continue;
+            }
+
             TopicEntity topicEntity = new TopicEntity();
             topicEntity.setTitle(article.getTitle());
             topicEntity.setUpdatedTime(LocalDateTime.now());
@@ -64,28 +70,60 @@ public class NewsService {
     }
 
     private List<String> fetchParagraphsFromLink(TopicEntity topicEntity, String link) throws IOException {
-        Document documentLink = Jsoup.connect(link)
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-                .header("Accept-Language", "en-US,en;q=0.5")
-                .timeout(10000)
-                .get();
+        try {
+            Document documentLink = Jsoup.connect(link)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+                    .header("Accept-Language", "en-US,en;q=0.5")
+                    .timeout(20000)
+                    .get();
 
-        Elements icerikAlaniDiv = documentLink.select("p");
+            Elements icerikAlaniDiv = documentLink.select("p");
 
-        StringBuilder linkParagraphBuilder = new StringBuilder();
+            StringBuilder linkParagraphBuilder = new StringBuilder();
 
-        for (Element element : icerikAlaniDiv) {
-            linkParagraphBuilder.append(element.text()).append("\n");
+            for (Element element : icerikAlaniDiv) {
+                linkParagraphBuilder.append(element.text()).append("\n");
+            }
+
+            PostEntity postEntity = new PostEntity();
+            postEntity.setTextParagraph(linkParagraphBuilder.toString());
+            postEntity.setCreatedAt(LocalDateTime.now());
+            postEntity.setTopic(topicEntity);
+            topicEntity.setPosts(Collections.singletonList(postEntity));
+
+            topicRepository.save(topicEntity);
+
+            return null;
+        } catch (HttpStatusException e) {
+            if (e.getStatusCode() == 403) {
+                // 403 hatasını görmezden gelin veya loglayın
+                System.out.println("403 Hatası: İstek reddedildi. URL: " + link);
+                return Collections.emptyList();
+            } else if (e.getStatusCode() == 451 ) {
+                System.out.println("451  Hatası: İstek reddedildi. URL: " + link);
+                return Collections.emptyList();
+            }
+            else if (e.getStatusCode() == 406 ) {
+                System.out.println("406  Hatası: İstek reddedildi. URL: " + link);
+                return Collections.emptyList();
+            }
+            else if (e.getStatusCode() == 436 ) {
+                System.out.println("406  Hatası: İstek reddedildi. URL: " + link);
+                return Collections.emptyList();
+            }
+                else {
+                // Diğer HTTP durum kodlarını ele alın
+                throw e;
+            }
         }
+    }
 
-        PostEntity postEntity = new PostEntity();
-        postEntity.setTextParagraph(linkParagraphBuilder.toString());
-        postEntity.setCreatedAt(LocalDateTime.now());
-        postEntity.setTopic(topicEntity);
-        topicEntity.setPosts(Collections.singletonList(postEntity));
+    public long getTotalScrapeCount() {
 
-        topicRepository.save(topicEntity);
+            // Son 24 saat içindeki verileri almak için
+            LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
 
-        return null;
+            return topicRepository.countByUpdatedTimeAfter(twentyFourHoursAgo);
+
     }
 }

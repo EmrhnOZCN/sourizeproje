@@ -70,8 +70,7 @@ public class LikeService {
     }
 
 
-
-
-
-
+    public long getTotalLikeCount() {
+        return likeRepository.count();
+    }
 }

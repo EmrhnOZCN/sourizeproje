@@ -67,5 +67,7 @@ public class CommentService {
     }
 
 
-
+    public long getTotalCommentCount() {
+        return commentRepository.count();
+    }
 }

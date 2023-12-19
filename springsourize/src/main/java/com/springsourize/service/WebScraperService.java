@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -146,8 +147,22 @@ public class WebScraperService {
     }
 
     public List<PostEntity> getPosts() {
+        List<TopicEntity> distinctTopics = topicRepository.findAll()
+                .stream()
+                .collect(
+                        Collectors.toMap(TopicEntity::getTitle, Function.identity(), (existing, replacement) -> existing)
+                )
+                .values()
+                .stream()
+                .collect(Collectors.toList());
 
-        return postRepository.findAll();
+        List<PostEntity> posts = new ArrayList<>();
+
+        for (TopicEntity topic : distinctTopics) {
+            posts.addAll(topic.getPosts());
+        }
+
+        return posts;
     }
 
     public List<TopicEntity> getBestTopics() {

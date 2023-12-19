@@ -5,8 +5,7 @@ import com.springsourize.dto.PostsDto;
 import com.springsourize.dto.TopicDto;
 import com.springsourize.model.CommentEntity;
 import com.springsourize.model.UserEntity;
-import com.springsourize.service.AdminService;
-import com.springsourize.service.UserService;
+import com.springsourize.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +23,29 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    private final CommentService commentService;
 
-    public AdminController(UserService userService, AdminService adminService) {
+    private final SummaryService summaryService;
+
+    private final LikeService likeService;
+
+    private final UserSummaryClickService userSummaryClickService;
+
+    private final WebScraperService webScraperService;
+
+    private final NewsService newsService;
+
+
+    public AdminController(UserService userService, AdminService adminService, CommentService commentService, SummaryService summaryService, LikeService likeService, UserSummaryClickService userSummaryClickService, WebScraperService webScraperService, NewsService newsService) {
         this.userService = userService;
 
         this.adminService = adminService;
+        this.commentService = commentService;
+        this.summaryService = summaryService;
+        this.likeService = likeService;
+        this.userSummaryClickService = userSummaryClickService;
+        this.webScraperService = webScraperService;
+        this.newsService = newsService;
     }
 
 
@@ -37,6 +54,16 @@ public class AdminController {
     public ResponseEntity<List<UserEntity>> getAllUsers() {
         List<UserEntity> users = adminService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+    @GetMapping("/getTotalUserCount")
+    public ResponseEntity<Long> getTotalUserCount() {
+        long totalUserCount = userService.getTotalUserCount();
+        return ResponseEntity.ok(totalUserCount-2);
+    }
+    @GetMapping("/getTotalUserRolePremiumCount")
+    public ResponseEntity<Long> getTotalUserRolePremiumCount() {
+        long totalUserRolePremiumCount = userService.getCountUsersByRole("ROLE_PREMIUM");
+        return ResponseEntity.ok(totalUserRolePremiumCount);
     }
 
     // Belirli bir kullanıcıyı getir
@@ -91,6 +118,12 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/getTotalCommentCount")
+    public ResponseEntity<Long> getTotalCommentCount() {
+        long totalCommentCount = commentService.getTotalCommentCount();
+        return ResponseEntity.ok(totalCommentCount);
+    }
+
     @DeleteMapping("/deleteComment/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable long commentId) {
         try {
@@ -129,6 +162,23 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting comment: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/getTotalLikeCount")
+    public ResponseEntity<Long> getTotalLikeCount() {
+        long totalLikeCount = likeService.getTotalLikeCount();
+        return ResponseEntity.ok(totalLikeCount);
+    }
+    @GetMapping("/getSummaryClickCount")
+    public ResponseEntity<Long> getUserSummaryClickCount() {
+        long totalClickCount = userSummaryClickService.getTotalClickCount();
+        return ResponseEntity.ok(totalClickCount);
+    }
+
+    @GetMapping("/getScrapeCount")
+    public ResponseEntity<Long> getScrapeCount() {
+        long totalScrapeCount = newsService.getTotalScrapeCount();
+        return ResponseEntity.ok(totalScrapeCount);
     }
 
 

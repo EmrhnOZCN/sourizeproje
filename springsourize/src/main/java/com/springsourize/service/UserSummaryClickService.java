@@ -59,6 +59,7 @@ public class UserSummaryClickService {
                         System.out.println("Post ID'ye ait post bulunamadı!");
                     }
                 } else {
+                    System.out.println("Günlük tıklama limitine ulaşıldı!");
                     throw new RuntimeException("Günlük tıklama limitine ulaşıldı!");
                 }
             } else {
@@ -70,4 +71,9 @@ public class UserSummaryClickService {
     }
 
 
+    public long getTotalClickCount() {
+        // Son 24 saat içindeki verileri almak için
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+        return userSummaryClickRepository.countByClickDateAfter(twentyFourHoursAgo);
+    }
 }

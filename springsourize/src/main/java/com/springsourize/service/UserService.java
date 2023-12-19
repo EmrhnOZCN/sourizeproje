@@ -79,8 +79,7 @@ public class UserService {
 
 
             String passw = user.getPassword();
-            System.out.println(password);
-            System.out.println(user.getPassword());
+
             // Şifreyi kontrol et (basit bir şifre kontrolü)
             if (password.equals( passw)) {
 
@@ -114,5 +113,14 @@ public class UserService {
         } else {
             throw new IllegalArgumentException("Kullanıcı bulunamadı");
         }
+    }
+
+    public long getTotalUserCount() {
+        return userRepository.count();
+    }
+
+
+    public long getCountUsersByRole(String roleName) {
+        return userRepository.countByRolesEntityRole(roleName);
     }
 }
