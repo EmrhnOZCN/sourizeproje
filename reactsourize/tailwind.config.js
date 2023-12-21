@@ -26,14 +26,21 @@ module.exports = {
           'cinnemon':'#7b3f00',
           'koyu-reddit-grisi':'#b0a8a0',
           'header-bg':'#fcfefbff',
+          'adminmenu':'#1c2434',
         },
         height: {
           custom_for_scrollbar:'480px',
           px107_for_logo:'107px',
+          '1/12': '8.333333%',
+          '5/12': '41.5%',
+          '1.5/12': '12%',
+          '11/12': '88.333333%',
         },
         width: {
           px310_for_logo:'310px',
           w3pcs:'6%',
+          '2.5/12':'21%',
+          '1.5/12':'12.5%',
         },
         fontSize: {
           '2xs': '0.65rem',

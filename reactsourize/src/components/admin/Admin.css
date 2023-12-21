@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.leftMenu {
+  @apply rounded-lg w-full h-1.5/12 font-sans font-semibold text-xs
+    text-center pl-10 justify-start flex flex-row items-center mb-4 text-gray-300 hover:text-adminmenu ;
+  transition: background-color 0.3s; /* Add a smooth transition for the color change */
+}
+
+.leftMenu:hover {
+  background-color: white;
+}
+.menuIcons{
+    @apply flex mr-2
+}
+.baseDivs{
+    @apply bg-gray-200 w-3/12 h-5/6 flex justify-between flex-row rounded-md shadow-lg
+}
+.baseDivsContainer{
+    @apply w-full h-2/6 flex flex-wrap justify-around items-center
+}
+.cardStyles{
+    @apply text-center bg-adminmenu text-gray-50 font-medium rounded-t-md w-full h-1.5/12 items-center
+}
