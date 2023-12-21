@@ -21,6 +21,7 @@ public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
                                                @Param("endDate") LocalDateTime endDate);
 
 
+
     List<TopicEntity> findTop30ByOrderByUpdatedTimeDesc();
     TopicEntity findTopByOrderByUpdatedTimeDesc();
 

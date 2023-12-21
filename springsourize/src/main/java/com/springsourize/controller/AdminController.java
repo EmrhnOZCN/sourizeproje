@@ -84,19 +84,20 @@ public class AdminController {
 //            return ResponseEntity.badRequest().body("Kullanıcı bulunamadı veya silinemedi.");
 //        }
 //    }
-    @PutMapping("/{userId}/disable")
-    public ResponseEntity<Object> disableUser(@PathVariable Long userId) {
+    @PutMapping("/disable")
+    public ResponseEntity<Object> disableUser(@RequestParam String email) {
         try {
-            Optional<UserEntity> updatedUser = Optional.ofNullable(adminService.updateUserEnabledStatus(userId, false));
+            Optional<UserEntity> updatedUser = Optional.ofNullable(adminService.updateUserEnabledStatusByEmail(email, false));
             return ResponseEntity.ok(updatedUser);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    @PutMapping("/{userId}/enable")
-    public ResponseEntity<Object> enableUser(@PathVariable Long userId) {
+
+    @PutMapping("/enable")
+    public ResponseEntity<Object> enableUser(@RequestParam String email) {
         try {
-            Optional<UserEntity> updatedUser = Optional.ofNullable(adminService.updateUserEnabledStatus(userId, true));
+            Optional<UserEntity> updatedUser = Optional.ofNullable(adminService.updateUserEnabledStatusByEmail(email, true));
             return ResponseEntity.ok(updatedUser);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -179,6 +180,11 @@ public class AdminController {
     public ResponseEntity<Long> getScrapeCount() {
         long totalScrapeCount = newsService.getTotalScrapeCount();
         return ResponseEntity.ok(totalScrapeCount);
+    }
+    @GetMapping("/getSummaryCount")
+    public ResponseEntity<Long> getSummaryCount() {
+        long totalSummaryCount = summaryService.getSummaryScrapeCount();
+        return ResponseEntity.ok(totalSummaryCount);
     }
 
 

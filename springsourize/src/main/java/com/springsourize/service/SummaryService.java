@@ -116,5 +116,12 @@ public class SummaryService {
         return Math.random() < 0.8; // Rastgele başarı oranı
     }
 
+    public long getSummaryScrapeCount() {
 
+        // Son 24 saat içindeki verileri almak için
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+
+        return summariesRepository.countByCreatedAtAfter(twentyFourHoursAgo);
+
+    }
 }

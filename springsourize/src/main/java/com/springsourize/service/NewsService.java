@@ -29,6 +29,8 @@ public class NewsService {
     private final TopicRepository topicRepository;
     private final PostRepository postRepository;
 
+
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     public NewsService(TopicRepository topicRepository, PostRepository postRepository) {
@@ -126,4 +128,5 @@ public class NewsService {
             return topicRepository.countByUpdatedTimeAfter(twentyFourHoursAgo);
 
     }
+
 }

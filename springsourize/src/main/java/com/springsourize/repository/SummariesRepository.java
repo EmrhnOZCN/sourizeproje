@@ -7,4 +7,7 @@ import java.time.LocalDateTime;
 
 public interface SummariesRepository extends JpaRepository<SummariesEntity,Long> {
 
+
+
+    long countByCreatedAtAfter(LocalDateTime twentyFourHoursAgo);
 }

@@ -9,6 +9,7 @@ import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
 import com.springsourize.model.UserEntity;
 import com.springsourize.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +45,22 @@ public class AdminService {
 
     public Optional<UserEntity> getUserById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+
+    public UserEntity updateUserEnabledStatusByEmail(String email, boolean isEnabled) {
+        Optional<UserEntity> user = getUserByEmail(email);
+
+        if (user.isPresent()) {
+            user.get().setEnabled(isEnabled);
+            return userRepository.save(user.get());
+        } else {
+            throw new EntityNotFoundException("User not found with email: " + email);
+        }
+    }
+
+    private Optional<UserEntity> getUserByEmail(String email) {
+        return userRepository.findByUsername(email);
     }
 
     public UserEntity updateUserEnabledStatus(Long userId, boolean isEnabled) {

@@ -11,7 +11,7 @@ const UserPanel = () =>{
             <div className="flex justify-center w-full h-1/12">
               <h1 className=" text-2xl text-gray-700">Kullanıcı İşlemleri</h1>
             </div>
-            <div className="w-full h-11/12 flex p-5">   
+            <div className="w-full h-11/12 flex p-5">
                 <div className="w-5/12 h-10/12 bg-gray-200 rounded-lg">
                     <h1 className=" text-center">Kullanıcı Ara</h1>
                     <div class="w-full justify-center flex mt-5">
@@ -23,7 +23,7 @@ const UserPanel = () =>{
                         </label>
                     </div>
                     <button className=" bg-white rounded-lg p-2 ml-4"> <img src={search} style={{ width: '24px', height: '24px' }}></img> </button>
-                    </div>  
+                    </div>
                 </div>
             <div className="w-7/12 flex-col">
                 <div className="w-full h-3/6  mb-3 mr-3 ml-3 bg-gray-200 rounded-lg">
@@ -39,7 +39,7 @@ const UserPanel = () =>{
                                 </label>
                                 </div>
                             </div>
-                            <button className=" bg-white rounded-lg p-2 ml-4"> <img src={ban} style={{ width: '24px', height: '24px' }}></img> </button>  
+                            <button className=" bg-white rounded-lg p-2 ml-4"> <img src={ban} style={{ width: '24px', height: '24px' }}></img> </button>
                         </div>
                     </div>
                 </div>
