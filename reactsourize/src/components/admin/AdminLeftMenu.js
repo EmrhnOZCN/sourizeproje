@@ -36,12 +36,8 @@ const AdminLeftMenu = ({onPanelChange }) => {
             <img src={yorum} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
             Yorum İşlemleri
           </button>
-          <button className='leftMenu' onClick={() => onPanelChange('haberPanel')}>
-            <img src={haber} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
-            Haber İşlemleri
-          </button>
           <button className='leftMenu' onClick={() => onPanelChange('ozetPanel')}>
-            <img src={ozet} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
+            <img src={haber} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
             Özet İşlemleri
           </button>
           <button className='leftMenu' onClick={() => onPanelChange('supportPanel')}>

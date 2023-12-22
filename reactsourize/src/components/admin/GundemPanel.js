@@ -25,8 +25,8 @@ const GundemPanel = () =>{
                         <div className=" rounded-md w-11/12 h-11/12 bg-gray-200 overflow-auto">
                             <div className=" w-full h-fit ">
                                 <ul className="">
-                                    <li className="items-center text-center rounded-md bg-gray-150 m-1 p-1 text-gray-700 flex">
-                                        <div className=" border-b border-black flex pb-2 text-center items-center w-full">
+                                    <li className="items-center text-center rounded-md bg-gray-150 m-1 p-1 text-gray-700 flex text-center items-center">
+                                        <div className=" border-b border-gray-700 flex pb-2 text-center items-center w-full">
                                             <p className=" pr-4">Sokak hayvanlarının kısırlaştırılması</p>
                                             <button className=" text-sm font-medium flex items-center w-fit h-fit p-2 bg-red-700 hover:bg-red-600 rounded-lg text-gray-200 hover:text-white hover:shadow-2xl hover:shadow-adminmenu">
                                                 <img src={del} className=' mr-2'style={{ width: '13px', height: '13px' }}></img>
