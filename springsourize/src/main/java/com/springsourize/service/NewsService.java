@@ -2,6 +2,7 @@ package com.springsourize.service;
 
 import com.springsourize.dto.NewsDto.Article;
 import com.springsourize.dto.NewsDto.NewsApiResponse;
+import com.springsourize.exception.CustomException;
 import com.springsourize.model.PostEntity;
 import com.springsourize.model.TopicEntity;
 import com.springsourize.repository.PostRepository;
@@ -11,7 +12,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -96,7 +99,8 @@ public class NewsService {
             topicRepository.save(topicEntity);
 
             return null;
-        } catch (HttpStatusException e) {
+
+        }catch (HttpStatusException e) {
             if (e.getStatusCode() == 403) {
                 // 403 hatasını görmezden gelin veya loglayın
                 System.out.println("403 Hatası: İstek reddedildi. URL: " + link);
@@ -113,6 +117,11 @@ public class NewsService {
                 System.out.println("406  Hatası: İstek reddedildi. URL: " + link);
                 return Collections.emptyList();
             }
+            else if (e.getStatusCode() == 401 ) {
+                System.out.println("406  Hatası: İstek reddedildi. URL: " + link);
+                return Collections.emptyList();
+            }
+
                 else {
                 // Diğer HTTP durum kodlarını ele alın
                 throw e;
