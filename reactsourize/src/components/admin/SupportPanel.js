@@ -34,7 +34,7 @@ const SupportPanel = () => {
                                                     <p className='w-fit m-2 p-1 text-sm font-semibold bg-blue-950 text-white rounded-md'>u/kullaniciAdi</p>
                                                     <p className='text-2xs m-1 font-bold'>kişisinden "</p>
                                                     <p className='text-2xs m-1 font-bold'>Sokak hayvanlarının kısırlaştırılması</p>
-                                                    <p className='text-2xs m-1 font-bold'>" konusunda bir mesaj</p>
+                                                    <p className='text-2xs m-1 font-bold'>"konusunda bir mesaj</p>
                                                     <p className='text-2xs m-1 font-normal font-mono'>at 19.03.2001</p>
                                                 </div>
                                             </button>

@@ -9,8 +9,9 @@
     import Summaries from '../summaries/summaries';
     import { useNavigate } from 'react-router-dom';
     import logo from '../img/SOUR.png';
-    import userIcon from '../img/user.png';
     import PremiumModalContent from '../premium/PremiumModalContent';
+    import destek from '../img/support.png'
+    import Support from '../support/Support';
 
     // App elementini belirle
     Modal.setAppElement('#root'); // Varsayılan olarak root elementi
@@ -18,6 +19,7 @@
     const BaseTemplate = React.memo(({ onLoginSuccess }) => {
       const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
       const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+      const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
       const [isLoggedIn, setIsLoggedIn] = useState(false);
       const [username, setUsername] = useState('');
       const [isSubSelectionModalOpen, setIsSubSelectionModalOpen] = useState(false);
@@ -25,9 +27,11 @@
       const [userIdforSelections, setUserIdForSelections] = useState(null); // Initialize user ID as null
       const [selectedPlatforms, setSelectedPlatforms] = useState([]);
       const [selectedPost, setSelectedPost] = useState(null);
-        const userId = localStorage.getItem('userId');
-        const role = localStorage.getItem('role');
+      const userId = localStorage.getItem('userId');
+      const role = localStorage.getItem('role');
       const navigate = useNavigate();
+
+
   const [isDestekFormuOpen, setIsDestekFormuOpen] = useState(false);
       // handleLoginSuccess fonksiyonunu useEffect kapsamı dışında tanımla
      const handleLoginSuccess = async (loginData) => {
@@ -92,9 +96,18 @@
           setIsSignUpModalOpen(true);
         }
       };
+      const handleSupportModalOpen = () => {
+        if (!isLoggedIn) {
+          // Open the sign-up modal only if the user is not logged in
+          setIsSupportModalOpen(true);
+        }
+      };
 
       const handleSignUpModalClose = () => {
         setIsSignUpModalOpen(false);
+      };
+      const handleSupportModalClose = () => {
+        setIsSupportModalOpen(false);
       };
       const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
@@ -191,12 +204,19 @@
                   </div>
                 </>
               ) : (
-                <div className='navbar-contents'>
-                  <button className='buttons' onClick={handleLoginModalOpen}>
+                <div className='navbar-contents flex'>
+                  <button className='buttons mr-4' onClick={handleLoginModalOpen}>
                     Giriş Yap
                   </button>
                   <button className='buttons' onClick={handleSignUpModalOpen}>
                     Kayıt Ol
+                  </button>
+                  <button className='buttons w-fit flex' onClick={handleSupportModalOpen}>
+                    <img src={destek}
+                    style={{ width: '24px', height: '24px' }}
+                    className='flex mr-2'
+                    ></img>
+                    Yardım
                   </button>
                 </div>
               )}
@@ -307,6 +327,36 @@
             }}    >
               <SignUp onClose={handleSignUpModalClose} />
             </Modal>
+
+            <Modal
+            isOpen={isSupportModalOpen}
+            onRequestClose={handleSupportModalClose}
+            contentLabel='Yardım Modalı'
+            style={{
+              overlay: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Set background color to transparent
+                zIndex: 1000,
+              },
+              content: {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                maxWidth: '60%',
+                maxHeight: '60%',
+                margin: '0 auto',
+                border: 'none', // Remove the border
+                borderRadius: '15px',
+                backgroundColor: 'white', // Set background color to transparent
+                padding: 0, // Remove any padding
+                overflow: 'visible', // Allow content to overflow
+              },
+            }}
+          >
+  <Support onClose={handleSupportModalClose} />
+</Modal>
+
+            
           </body>
         </div>
       );

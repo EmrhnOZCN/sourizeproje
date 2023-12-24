@@ -77,6 +77,10 @@
      text-reddit-fontcolor  mb-4 font-sans outline-none
   
   }
+  .long-inputs {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
   .form-group{
     @apply pt-3
   }
