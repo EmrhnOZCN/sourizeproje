@@ -6,8 +6,6 @@ import AdminBase from './AdminBase';
 import UserPanel from './UserPanel';
 import GundemPanel from './GundemPanel'; // Import other panels as needed
 import YorumPanel from './YorumPanel';
-import HaberPanel from './HaberPanel';
-import OzetPanel from './OzetPanel';
 import SupportPanel from './SupportPanel';
 
 const AdminPanel = () => {
@@ -39,8 +37,6 @@ const AdminPanel = () => {
         {activePanel === 'userPanel' && <UserPanel />}
         {activePanel === 'gundemPanel' && <GundemPanel />}
         {activePanel === 'yorumPanel' && <YorumPanel />}
-        {activePanel === 'haberPanel' && <HaberPanel />}
-        {activePanel === 'ozetPanel' && <OzetPanel />}
         {activePanel === 'supportPanel' && <SupportPanel />}
       </div>
     </div>
