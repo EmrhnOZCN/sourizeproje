@@ -36,10 +36,6 @@ const AdminLeftMenu = ({onPanelChange }) => {
             <img src={yorum} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
             Yorum İşlemleri
           </button>
-          <button className='leftMenu' onClick={() => onPanelChange('ozetPanel')}>
-            <img src={haber} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
-            Özet İşlemleri
-          </button>
           <button className='leftMenu' onClick={() => onPanelChange('supportPanel')}>
             <img src={support} className='menuIcons'style={{ width: '30px', height: '30px' }}></img>
             Destek Mesajları

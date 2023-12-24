@@ -32,5 +32,5 @@ public class SupportMessageEntity {
     @ManyToOne
     private UserEntity recipient;
 
-    private boolean isRead;
+    private boolean wannaRead;
 }
