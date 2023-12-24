@@ -1,8 +1,6 @@
 package com.springsourize.controller;
 
-import com.springsourize.dto.CommentDto;
-import com.springsourize.dto.PostsDto;
-import com.springsourize.dto.TopicDto;
+import com.springsourize.dto.*;
 import com.springsourize.model.CommentEntity;
 import com.springsourize.model.UserEntity;
 import com.springsourize.service.*;
@@ -11,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,14 +124,14 @@ public class AdminController {
         return ResponseEntity.ok(totalCommentCount);
     }
 
-    @DeleteMapping("/deleteComment/{commentId}")
+    @DeleteMapping("deleteComment/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable long commentId) {
         try {
             // Comment silme işlemini gerçekleştir
             adminService.deleteComment(commentId);
             return ResponseEntity.ok("Comment successfully deleted.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting comment: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error deleting comment: " + e.getMessage());
         }
     }
 
@@ -185,6 +184,36 @@ public class AdminController {
     public ResponseEntity<Long> getSummaryCount() {
         long totalSummaryCount = summaryService.getSummaryScrapeCount();
         return ResponseEntity.ok(totalSummaryCount);
+    }
+
+    @GetMapping("/getSupportMessage")
+    public ResponseEntity<List<MessageDTO>> getMessagesByRecipientId() {
+        List<MessageDTO> messages = adminService.getSupportMessage();
+        return ResponseEntity.ok(messages);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody LoginUserRequest loginUserRequest) {
+        try {
+
+
+
+            UserEntity user = userService.loginUser(loginUserRequest);
+
+            AuthResponse authResponse = new AuthResponse();
+
+
+
+            // Kullanıcının premium olup olmadığını kontrol et
+
+            authResponse.setRole(user.getRolesEntity().getRole());
+
+
+
+            return ResponseEntity.ok(authResponse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
 

@@ -20,24 +20,24 @@ function CommentBox({ postId, onCommentAdd }) {
         toast.error('Yorum boş olamaz.');
         return;
       }
-
+  
       // Kontrol et: userId var mı?
       if (userId === null || userId === undefined) {
         toast.error('userId eksik.');
         return;
       }
-
+  
       const response = await axios.post(`http://localhost:8080/api/comments/add`, {
         postId: postId,
         userId: userId,
         content: newComment,
       });
-
+  
       if (response.status === 201) {
-        onCommentAdd(response.data.newComment);
+        // onCommentAdd fonksiyonunu güncelledik, tüm yorum bilgilerini içermeli.
+        onCommentAdd(response.data.comment);
         setNewComment('');
         toast.success('Yorum başarıyla eklendi.');
-
       } else {
         toast.error('Yorum eklenirken bir hata oluştu.');
       }

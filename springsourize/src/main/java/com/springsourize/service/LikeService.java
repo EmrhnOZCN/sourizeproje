@@ -1,6 +1,7 @@
 package com.springsourize.service;
 
 import com.springsourize.dto.PopularPostResultDTO;
+import com.springsourize.exception.CustomException;
 import com.springsourize.model.LikeEntity;
 import com.springsourize.model.PostEntity;
 import com.springsourize.model.UserEntity;
@@ -49,10 +50,10 @@ public class LikeService {
 
     public void unlikePost(Long postId, Long userId) {
         PostEntity post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+                .orElseThrow(() -> new CustomException("Post not found"));
 
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new CustomException("User not found"));
 
         Optional<LikeEntity> existingLike = likeRepository.findByPostAndUser(post, user);
 

@@ -3,7 +3,8 @@ package com.springsourize.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 import java.util.Collection;
@@ -42,23 +43,18 @@ public class UserEntity  {
 
 
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    private RoleEntity  rolesEntity;
+    private RoleEntity rolesEntity;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
-    private Set<CommentEntity> comments;
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.MERGE)
     private Set<SupportMessageEntity> sentMessages;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.MERGE)
     private Set<SupportMessageEntity> receivedMessages;
 
 
-    public void removeComment(CommentEntity comment) {
-        comments.remove(comment);
-    }
+
 
 
 }

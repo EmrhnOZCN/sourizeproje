@@ -7,6 +7,7 @@ import com.springsourize.repository.SupportMessageRepository;
 import com.springsourize.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +36,8 @@ public class MessageService {
 
     public void sendMessage(MessageDTO messageDTO) {
         SupportMessageEntity messageEntity = convertToEntity(messageDTO);
-        messageEntity.setTimestamp(new Date());
+        LocalDateTime now = LocalDateTime.now();
+        messageEntity.setTimestamp(now);
         supportMessageRepository.save(messageEntity);
     }
 

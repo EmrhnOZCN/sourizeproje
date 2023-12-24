@@ -11,7 +11,7 @@ const AdminLogin = () => {
 
   const handleLogin = () => {
     // Check if email and password match the credentials
-    if (email === 'tugruldonmez23@gmail.com' && password === '12345') {
+    if (email === 'tugruldonmez23@gmail.com' && password === '12345' ||email === 'adminn@gmail.com' && password === '12345'  ) {
       // Clear any previous errors
       setError('');
 

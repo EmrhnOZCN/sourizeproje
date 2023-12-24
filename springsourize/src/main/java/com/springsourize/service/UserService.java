@@ -71,6 +71,8 @@ public class UserService {
         String username = loginUserRequest.username();
         String password = loginUserRequest.password();
 
+        System.out.println(username);
+        System.out.println(password);
         Optional<UserEntity> userOptional = userRepository.findByUsername(username);
 
 

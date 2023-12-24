@@ -3,6 +3,8 @@ package com.springsourize.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -18,14 +20,14 @@ public class CommentEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private PostEntity post;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    @JsonIgnore
     private UserEntity author;
 
 

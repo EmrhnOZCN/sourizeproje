@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -47,11 +48,10 @@ public class CommentService {
     }
 
     public PostCommentsDto getCommentsByPostId(Long postId) {
-        System.out.println("burda");
-        System.out.println(postId);
-        PostEntity post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Optional<PostEntity> optionalPost = postRepository.findById(postId);
+        PostEntity post = optionalPost.orElseThrow(() -> new EntityNotFoundException("Id'si " + postId + "olan post bulunamadı"));
 
+        System.out.println(post.getTopic().getTitle());
         return PostCommentsDto.fromEntity(post);
     }
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,7 +25,7 @@ public class SupportMessageEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @ManyToOne
     private UserEntity sender;
@@ -32,5 +33,5 @@ public class SupportMessageEntity {
     @ManyToOne
     private UserEntity recipient;
 
-    private boolean wannaRead;
+    private boolean isRead;
 }

@@ -1,21 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import './Admin.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SupportPanel = () => {
-    const [wannaRead, setwannaRead] = useState(null);
-    const [isRead, setIsRead] = useState(false);
+    const [supportMessage, setSupportMessage] = useState([]);
 
-    function toggleMessage() {
-        setwannaRead(prevwannaRead => !prevwannaRead);
-    }
-    function isReadService(){
-        setIsRead(true);
-        console.log(isRead);
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/admin/getSupportMessage');
+                const data = await response.json();
+                setSupportMessage(data);
+            } catch (error) {
+                console.error('Error fetching support messages:', error);
+            }
+        };
 
-    const messageDivStyle = {
-        display: wannaRead ? 'block' : 'none',
+        fetchData();
+    }, []);
+
+    const [openMessages, setOpenMessages] = useState([]);
+
+    const toggleMessage = (index,messageId,isReads) => {
+        setOpenMessages((prevOpenMessages) => {
+
+            console.log(isReads);
+            if(!isReads){
+                
+                markMessageAsRead(messageId);}
+           
+            const updatedOpenMessages = [...prevOpenMessages];
+            updatedOpenMessages[index] = !updatedOpenMessages[index];
+            return updatedOpenMessages;
+        });
+    };
+    const markMessageAsRead = async (messageId) => {
+        // API isteği ile mesajı işaretlenmiş olarak güncelle
+        try {
+            await fetch(`http://localhost:8080/api/messages/mark-as-read/${messageId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            // Mesajı işaretlendi olarak güncelle
+            setSupportMessage((prevSupportMessage) => {
+                const updatedMessages = prevSupportMessage.map((message) =>
+                    message.id === messageId ? { ...message, isRead: true } : message
+                );
+                return updatedMessages;
+            });
+        } catch (error) {
+            console.error('Error marking message as read:', error);
+        }
     };
 
     return (
@@ -26,24 +64,28 @@ const SupportPanel = () => {
                     <div className="rounded-md w-11/12 h-11/12 bg-gray-200 overflow-auto">
                         <div className="w-full h-fit">
                             <ul>
-                                <li className="items-center rounded-md bg-gray-150 m-1 p-1 text-gray-700 flex">
-                                    <div className="flex pb-2 items-center w-full">
-                                        <div className='w-full bg-gray-50 rounded-md'>
-                                            <button className=' w-full' onClick={() => { isReadService(); toggleMessage(); }}>
-                                                <div id='baslik' className='flex items-center' >
-                                                    <p className='w-fit m-2 p-1 text-sm font-semibold bg-blue-950 text-white rounded-md'>u/kullaniciAdi</p>
-                                                    <p className='text-2xs m-1 font-bold'>kişisinden "</p>
-                                                    <p className='text-2xs m-1 font-bold'>Sokak hayvanlarının kısırlaştırılması</p>
-                                                    <p className='text-2xs m-1 font-bold'>"konusunda bir mesaj</p>
-                                                    <p className='text-2xs m-1 font-normal font-mono'>at 19.03.2001</p>
-                                                </div>
-                                            </button>
-                                            <p id="message" className='text-base m-1 p-2 font-normal text-adminmenu bg-gray-200 rounded-md' style={messageDivStyle}>
-                                                Anadolu Yakasında (Tepeören Sahipsiz Hayvan Geçici Bakımevi ve Bahçeli Yaşam Alanı) ve Avrupa Yakasında (Kemerburgaz Sahipsiz Hayvan Geçici Bakımevi) İBB’ye ait birer hayvan bakımevinde 7/24 esasına göre nöbetçi ekip ve veteriner hekim bulunmakta olup, bu birimlerce mesai saatleri sonrasında yeni oluşan trafik kazası vb. travmatik yaralanmalar gibi acil durumlara öncelikle müdahale edilmektedir. Hayvanları Koruma Kanunu doğrultusunda ilçe belediyelerinin de büyükşehir belediyeleri gibi sahipsiz hayvanlara yönelik hizmet sunma görevi bulunmaktadır.
-                                            </p>
+                                {supportMessage.map((message, index) => (
+                                    <li key={index} className={`items-center rounded-md ${message.isRead ? 'bg-gray-150' : 'bg-yellow-200'} m-1 p-1 text-gray-700 flex`}>
+                                        <div className="flex pb-2 items-center w-full">
+                                            <div className='w-full bg-gray-50 rounded-md'>
+                                                <button className='w-full' onClick={() => toggleMessage(index,message.id,message.isRead)}>
+                                                    <div id='baslik' className='flex items-center' >
+                                                        <p className={`w-fit m-2 p-1 text-sm font-semibold ${message.isRead ? 'bg-blue-950 text-white' : 'bg-yellow-500 text-black'} rounded-md`}>{message.firstName + ' ' + message.lastName}</p>
+                                                        <p className='text-2xs m-1 font-bold'>kişisinden "</p>
+                                                        <p className='text-2xs m-1 font-bold'>{message.subject}</p>
+                                                        <p className='text-2xs m-1 font-bold'>" konusunda bir mesaj</p>
+                                                        <p className='text-2xs m-1 font-normal font-mono'>at {message.timeStamp}</p>
+                                                    </div>
+                                                </button>
+                                                {openMessages[index] && (
+                                                    <p id="message" className='text-base m-1 p-2 font-normal text-adminmenu bg-gray-200 rounded-md' >
+                                                        {message.content}
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>

@@ -97,7 +97,7 @@
         }
       };
       const handleSupportModalOpen = () => {
-        if (!isLoggedIn) {
+        if (isLoggedIn) {
           // Open the sign-up modal only if the user is not logged in
           setIsSupportModalOpen(true);
         }
@@ -200,6 +200,13 @@
                     <button className='buttons xs:w-1/3' onClick={handleLogout}>
                       Çıkış Yap
                     </button>
+                    <button className='buttons xs:w-1/3' onClick={handleSupportModalOpen}>
+                    <img src={destek}
+                    style={{ width: '12px', height: '12px' }}
+                    className='flex mr-2'
+                    ></img>
+                    Yardım
+                  </button>
 
                   </div>
                 </>
@@ -211,13 +218,7 @@
                   <button className='buttons' onClick={handleSignUpModalOpen}>
                     Kayıt Ol
                   </button>
-                  <button className='buttons w-fit flex' onClick={handleSupportModalOpen}>
-                    <img src={destek}
-                    style={{ width: '24px', height: '24px' }}
-                    className='flex mr-2'
-                    ></img>
-                    Yardım
-                  </button>
+                  
                 </div>
               )}
             </div>

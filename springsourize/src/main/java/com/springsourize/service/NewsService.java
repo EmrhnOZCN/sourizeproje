@@ -18,6 +18,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,7 +101,11 @@ public class NewsService {
 
             return null;
 
-        }catch (HttpStatusException e) {
+        }catch (SocketTimeoutException s){
+            System.out.println(s.getMessage());
+            return Collections.emptyList();
+        }
+        catch (HttpStatusException e) {
             if (e.getStatusCode() == 403) {
                 // 403 hatasını görmezden gelin veya loglayın
                 System.out.println("403 Hatası: İstek reddedildi. URL: " + link);

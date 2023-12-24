@@ -22,7 +22,7 @@ public class UserSummaryClickEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "summary_id")
     private SummariesEntity summary;
 

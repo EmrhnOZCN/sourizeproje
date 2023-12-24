@@ -23,7 +23,7 @@ public class TopicEntity {
     @Column(columnDefinition = "TEXT")
     private String link;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     private List<PostEntity> posts;
 
     @Override

@@ -2,12 +2,10 @@ package com.springsourize.service;
 
 
 import com.springsourize.dto.CommentDto;
+import com.springsourize.dto.MessageDTO;
 import com.springsourize.dto.PostsDto;
 import com.springsourize.dto.TopicDto;
-import com.springsourize.model.CommentEntity;
-import com.springsourize.model.PostEntity;
-import com.springsourize.model.TopicEntity;
-import com.springsourize.model.UserEntity;
+import com.springsourize.model.*;
 import com.springsourize.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,12 +29,16 @@ public class AdminService {
 
     private final TopicRepository topicRepository;
 
-    public AdminService(UserRepository userRepository, LikeRepository likeRepository, PostRepository postRepository, CommentRepository commentRepository, TopicRepository topicRepository) {
+    private final SupportMessageRepository supportMessageRepository;
+
+
+    public AdminService(UserRepository userRepository, LikeRepository likeRepository, PostRepository postRepository, CommentRepository commentRepository, TopicRepository topicRepository, SupportMessageRepository supportMessageRepository) {
         this.userRepository = userRepository;
         this.likeRepository = likeRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.topicRepository = topicRepository;
+        this.supportMessageRepository = supportMessageRepository;
     }
 
     public List<UserEntity> getAllUsers() {
@@ -79,8 +81,13 @@ public class AdminService {
         return commentRepository.findById(commentId);
     }
     public void deleteComment(long commentId) {
-        commentRepository.deleteById(commentId);
+
+        Optional<CommentEntity> commentOptional = commentRepository.findById(commentId);
+
+        // Comment varsa sil
+        commentOptional.ifPresent(commentRepository::delete);
     }
+
 
     public List<PostsDto> getAllPostsForAdmin() {
         List<PostEntity> posts = postRepository.findAll();
@@ -98,8 +105,15 @@ public class AdminService {
     public void deleteTopicWithPosts(long topicId) {
         Optional<TopicEntity> topicEntity = topicRepository.findById(topicId);
         if (topicEntity.isPresent()) {
-            topicRepository.deleteById(topicId); // Bu satırı ekleyerek değişiklikleri veritabanına uygula
+            topicRepository.deleteById(topicId);
         }
+    }
+
+    public List<MessageDTO> getSupportMessage() {
+        List<SupportMessageEntity> messages = supportMessageRepository.findAllOrderByIsReadAndTimestampDesc();
+        return messages.stream()
+                .map(MessageDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
 }
