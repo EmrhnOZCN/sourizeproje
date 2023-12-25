@@ -22,9 +22,10 @@ public class PostEntity {
     @JsonIgnore
     private String textParagraph;
 
-    @OneToOne()
-    @JoinColumn(name = "topic_id")
+    @ManyToOne
+    @JoinColumn(name = "topic_id", nullable = false)
     private TopicEntity topic;
+
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -36,7 +37,7 @@ public class PostEntity {
 
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "post", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SummariesEntity summary;
 
     public void setTextParagraphs(List<String> paragraphs) {

@@ -10,4 +10,6 @@ public interface UserSummaryClickRepository extends JpaRepository<UserSummaryCli
     long countByClickDateAfter(LocalDateTime twentyFourHoursAgo);
     long countByUserAndClickDateAfter(UserEntity user, LocalDateTime date);
 
+    void deleteBySummaryId(Long summaryId);
+
 }

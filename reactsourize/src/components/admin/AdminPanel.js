@@ -14,11 +14,9 @@ const AdminPanel = () => {
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    const isAuthorizedUser =
-      localStorage.getItem('email') === 'tugruldonmez23@gmail.com' &&
-      localStorage.getItem('password') === '12345';
 
-    if (!isAuthenticated || !isAuthorizedUser) {
+
+    if (!isAuthenticated ) {
       navigate('/admin');
     }
   }, [navigate]);

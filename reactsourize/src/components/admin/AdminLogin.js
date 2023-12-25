@@ -1,7 +1,7 @@
 // AdminLogin.js
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -9,35 +9,35 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    // Check if email and password match the credentials
-    if (email === 'tugruldonmez23@gmail.com' && password === '12345' ||email === 'adminn@gmail.com' && password === '12345'  ) {
-      // Clear any previous errors
-      setError('');
+  const handleLoginAdmin = async () => {
+    try {
+      const username = email;
+      const loginResponse = await axios.post('http://localhost:8080/admin/login', {
+        username,
+        password,
+      });
 
-      // Set authentication and user credentials in localStorage
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-
-      navigate('/admin/panel');
-    } else {
-      setError('Invalid email or password');
+      if (loginResponse.status === 200) {
+        // Başarılı giriş durumunda token veya başka bir kimlik doğrulama mekanizması alınabilir
+        // ve kullanıcıyı yönlendirin
+        navigate('/admin/panel');
+      } else {
+        setError('Geçersiz e-posta veya şifre');
+      }
+    } catch (error) {
+      console.error('Giriş sırasında hata:', error);
     }
   };
 
-  // Bu kısım eklenmiştir
   const handleBeforeUnload = () => {
-    // Remove email and password from localStorage when the page is closed
+    // Sayfa kapatıldığında localStorage'dan e-posta ve şifreyi kaldırın
     localStorage.removeItem('email');
     localStorage.removeItem('password');
   };
 
-  // Etkinlik dinleyicisini ekleyin
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // Temizleme fonksiyonunu kaldırın
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
@@ -89,13 +89,13 @@ const AdminLogin = () => {
             <button
               type="button"
               className=" font-sans group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={handleLogin}
+              onClick={handleLoginAdmin}
             >
               Giriş
             </button>
           </div>
         </form>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+       {error && <p className="text-red-500 text-sm">{error}</p>}
       </div>
     </div>
   );

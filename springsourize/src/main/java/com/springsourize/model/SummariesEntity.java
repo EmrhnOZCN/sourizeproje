@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -18,16 +19,17 @@ public class SummariesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private PostEntity post;
-
+    @Column(columnDefinition = "TEXT")
     private String textParagraphSummary;
 
     private LocalDateTime createdAt;
 
     // Getter ve Setter metotları
-
+    @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSummaryClickEntity> userSummaryClicks;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

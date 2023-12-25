@@ -43,7 +43,7 @@ public class UserEntity  {
 
 
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity rolesEntity;
 

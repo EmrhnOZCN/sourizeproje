@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +104,13 @@ public class NewsService {
 
         }catch (SocketTimeoutException s){
             System.out.println(s.getMessage());
+            return Collections.emptyList();
+        }
+        catch (UnknownHostException u){
+            System.out.println(u.getMessage());
+            return Collections.emptyList();
+        }catch (StackOverflowError stackOverflowError){
+            System.out.println(stackOverflowError.getMessage());
             return Collections.emptyList();
         }
         catch (HttpStatusException e) {

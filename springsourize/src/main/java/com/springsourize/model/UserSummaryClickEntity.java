@@ -26,6 +26,7 @@ public class UserSummaryClickEntity {
     @JoinColumn(name = "summary_id")
     private SummariesEntity summary;
 
+
     @Column(name = "click_date")
     private LocalDateTime clickDate;
 

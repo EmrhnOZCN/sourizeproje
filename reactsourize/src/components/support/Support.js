@@ -27,7 +27,7 @@ const Support = () => {
                     subject,
                     content: message,
                     senderId: parseInt(userId), // Assuming userId is a number
-                    recipientId: 3, // You can replace 0 with the actual recipientId
+                    recipientId: 1, // You can replace 0 with the actual recipientId
                 }),
             });
 
