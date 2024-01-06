@@ -188,7 +188,7 @@
               </a>
               {isLoggedIn ? (
                 <>
-                  <div id='buttonsloggedin' className=' xs:w-1/4 sm:w-4/12 lg:w-2/12'>
+                  <div id='buttonsloggedin' className=' xs:w-1/5  w-4/12 w-2/12'>
                    {role === 'ROLE_USER' && (
                           <button className='buttons xs:w-1/3' onClick={handlePremiumButtonClick}>
                             Premium
@@ -197,14 +197,11 @@
 
 
                     {/* Logout button */}
-                    <button className='buttons xs:w-1/3' onClick={handleLogout}>
+                    <button className='buttons w-1/3' onClick={handleLogout}>
                       Çıkış Yap
                     </button>
-                    <button className='buttons xs:w-1/3' onClick={handleSupportModalOpen}>
-                    <img src={destek}
-                    style={{ width: '12px', height: '12px' }}
-                    className='flex mr-2'
-                    ></img>
+                    <button className='buttons w-1/3' onClick={handleSupportModalOpen}>
+
                     Yardım
                   </button>
 

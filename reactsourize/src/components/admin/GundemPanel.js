@@ -55,7 +55,8 @@ const GundemPanel = () => {
        };
 
     return (
-        <div className="bg-gray-100 rounded-md w-11/12 h-11/12 flex">
+
+        <div className="bg-gray-100 rounded-md w-11/12 h-gundem flex">
             <div className="flex flex-wrap w-full items-center justify-center">
                 <h1 className="text-2xl text-gray-700">Gündem İşlemleri</h1>
                 <div className="justify-center items-center w-11/12 rounded-md h-1/6 flex bg-gray-200">
