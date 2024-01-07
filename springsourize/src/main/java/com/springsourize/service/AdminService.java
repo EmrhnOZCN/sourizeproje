@@ -67,7 +67,7 @@ public class AdminService {
         }
     }
 
-    private Optional<UserEntity> getUserByEmail(String email) {
+    public Optional<UserEntity> getUserByEmail(String email) {
         return userRepository.findByUsername(email);
     }
 
@@ -82,6 +82,7 @@ public class AdminService {
                 .map(CommentDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
 
     public Optional<CommentEntity> getCommentsById(Long commentId) {
         return commentRepository.findById(commentId);

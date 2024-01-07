@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     long countByRolesEntityRole(String roleName);
 
 
+
 }

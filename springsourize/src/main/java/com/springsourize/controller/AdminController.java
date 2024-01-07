@@ -144,6 +144,13 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserEntity> getUserByEmail(@PathVariable String email) {
+        Optional<UserEntity> userOptional = adminService.getUserByEmail(email);
+        return userOptional.map(user -> ResponseEntity.ok().body(user))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/getTopics")
     public ResponseEntity<List<TopicDto>> getTopicsForAdmin() {
         try {
@@ -169,6 +176,7 @@ public class AdminController {
         long totalLikeCount = likeService.getTotalLikeCount();
         return ResponseEntity.ok(totalLikeCount);
     }
+
     @GetMapping("/getSummaryClickCount")
     public ResponseEntity<Long> getUserSummaryClickCount() {
         long totalClickCount = userSummaryClickService.getTotalClickCount();

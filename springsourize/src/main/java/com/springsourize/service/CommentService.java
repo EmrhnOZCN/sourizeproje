@@ -9,16 +9,20 @@ import com.springsourize.model.UserEntity;
 import com.springsourize.repository.CommentRepository;
 import com.springsourize.repository.PostRepository;
 import com.springsourize.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CommentService {
-
+    @PersistenceContext
+    private EntityManager entityManager;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -69,5 +73,11 @@ public class CommentService {
 
     public long getTotalCommentCount() {
         return commentRepository.count();
+    }
+
+
+    public Long addCommentWithStoredProcedure(Long postId, Long userId, String content, Timestamp createdAt) {
+        // PostgreSQL saklı procedure'ünü CommentRepository aracılığıyla çağırma
+        return commentRepository.addCommentT(postId,userId,content,createdAt);
     }
 }
