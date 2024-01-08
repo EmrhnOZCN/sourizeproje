@@ -203,26 +203,23 @@ public class AdminController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginUserRequest loginUserRequest) {
         try {
-
-
-
             UserEntity user = userService.loginUser(loginUserRequest);
-
             AuthResponse authResponse = new AuthResponse();
-
-
-
-            // Kullanıcının premium olup olmadığını kontrol et
-
             authResponse.setRole(user.getRolesEntity().getRole());
 
+            System.out.println(authResponse.getRole());
 
-
-            return ResponseEntity.ok(authResponse);
+            if ("ROLE_ADMIN".equals(authResponse.getRole())) {
+                return ResponseEntity.ok(authResponse);
+            } else {
+                // Kullanıcının rolü "ROLE_ADMIN" değilse 404 hatası dön
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("404 Not Found");
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
 
 
 

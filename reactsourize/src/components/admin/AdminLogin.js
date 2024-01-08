@@ -8,8 +8,12 @@ const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isAuthenticated,setIsAuthenticated] = useState(null);
 
   const handleLoginAdmin = async () => {
+
+
+
     try {
       const username = email;
       const loginResponse = await axios.post('http://localhost:8080/admin/login', {
@@ -20,6 +24,10 @@ const AdminLogin = () => {
       if (loginResponse.status === 200) {
         // Başarılı giriş durumunda token veya başka bir kimlik doğrulama mekanizması alınabilir
         // ve kullanıcıyı yönlendirin
+
+          setIsAuthenticated('true');
+          localStorage.setItem('isAuthenticated', 'true');
+
         navigate('/admin/panel');
       } else {
         setError('Geçersiz e-posta veya şifre');
@@ -33,6 +41,8 @@ const AdminLogin = () => {
     // Sayfa kapatıldığında localStorage'dan e-posta ve şifreyi kaldırın
     localStorage.removeItem('email');
     localStorage.removeItem('password');
+    localStorage.removeItem('isAuthenticated');
+
   };
 
   useEffect(() => {
