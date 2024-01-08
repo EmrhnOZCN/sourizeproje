@@ -16,7 +16,7 @@
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('http://localhost:8080/api/getTopics');
+            const response = await axios.get('http://localhost:8080/admin/getTopics');
             setTopics(response.data);
 
           } catch (error) {

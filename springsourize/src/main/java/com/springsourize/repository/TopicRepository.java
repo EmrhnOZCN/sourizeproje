@@ -30,4 +30,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity,Long> {
     Optional<TopicEntity> findByTitle(String s);
 
     long countByUpdatedTimeAfter(LocalDateTime twentyFourHoursAgo);
+
+    List<TopicEntity> findTop25ByOrderByUpdatedTimeDesc();
 }

@@ -103,7 +103,8 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
     public List<TopicDto> getAllTopicForAdmin() {
-        List<TopicEntity> topics = topicRepository.findAll();
+        List<TopicEntity> topics = topicRepository.findTop25ByOrderByUpdatedTimeDesc();
+
         return topics.stream()
                 .map(TopicDto::fromEntity)
                 .collect(Collectors.toList());
